@@ -50,6 +50,7 @@ const Cursor = ({
         width: ${size}px;
         border-radius: ${size / 2}px;
         transition: ${interpolate ? "0.1s ease all" : "none"};
+        pointer-events: none;
       `}
     >
       <CursorIcon color={cursorColor} />
