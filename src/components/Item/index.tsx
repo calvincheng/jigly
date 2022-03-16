@@ -11,6 +11,7 @@ type ItemProps = {
 };
 
 const Item = ({ item, idx }: ItemProps) => {
+  console.log(idx);
   const { pos, updatePos } = useItem(item);
   const [x, y] = pos;
   const draggedRef = useRef<boolean>(false);
@@ -25,8 +26,8 @@ const Item = ({ item, idx }: ItemProps) => {
       const [dx, dy] = delta;
       updatePos([event.clientX - dx, event.clientY - dy]);
     } else if (event.button === 2) {
-      event.preventDefault();
-      console.log("deleting");
+      event.stopPropagation();
+      console.log(`deleting index ${idx}`);
       doc.getArray("items").delete(idx, 1);
     }
   };

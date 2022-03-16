@@ -21,8 +21,8 @@ const ChatBubble = ({
         align-items: center;
         justify-items: start;
         padding: 8px 12px;
-        transform: translate(16px, 4px);
-        border: 2px solid white;
+        transform: translate(16px, -4px);
+        border: 2px solid #f5e0dc;
         border-radius: 15px;
         border-top-left-radius: 0px;
         background: ${background};

@@ -49,7 +49,7 @@ const Cursor = ({
         height: ${size}px;
         width: ${size}px;
         border-radius: ${size / 2}px;
-        transition: ${interpolate ? "0.1s ease all" : "none"};
+        transition: ${interpolate ? "0.05s ease all" : "none"};
         pointer-events: none;
       `}
     >

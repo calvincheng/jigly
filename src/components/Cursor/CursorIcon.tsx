@@ -1,8 +1,8 @@
 const CursorIcon = ({ fill = "white", stroke = "#161320" }) => {
   return (
     <svg
-      width="20"
-      height="28"
+      width="24"
+      height="34"
       viewBox="0 0 1000 1000"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
