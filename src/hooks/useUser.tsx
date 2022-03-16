@@ -18,11 +18,20 @@ const useUser = () => {
     [awareness]
   );
 
+  const updateActive = useCallback<any>(
+    (active: boolean) => {
+      awareness.setLocalStateField("active", active);
+      refetchUser();
+    },
+    [awareness]
+  );
+
   useEffect(() => {
     const initial: User = {
       id: awareness.clientID.toString(),
       pos: [0, 0],
       chat: "",
+      active: true,
     };
     awareness.setLocalState(initial);
     setUser(initial);
@@ -61,7 +70,10 @@ const useUser = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  return [{ user, chatting }, { updateChat }];
+  return [
+    { user, chatting },
+    { updateChat, updateActive },
+  ];
 };
 
 export default useUser;

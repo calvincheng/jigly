@@ -25,6 +25,7 @@ type CursorProps = {
   chat?: string;
   chatting?: boolean;
   onChat?: (event: any) => void;
+  active?: boolean;
 };
 
 const Cursor = ({
@@ -35,10 +36,13 @@ const Cursor = ({
   chat = "",
   chatting = false,
   onChat = () => null,
+  active = true,
 }: CursorProps) => {
   const size = 16;
   const cursorColor = color ?? COLORS[id.charCodeAt(0) % COLORS.length];
   const [x, y] = pos;
+
+  if (!active) return null;
 
   return (
     <div
