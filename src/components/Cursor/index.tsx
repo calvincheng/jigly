@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import CursorIcon from "./CursorIcon";
+import ChatBubble from "../ChatBubble";
 
 // Catppuccin colourscheme
 const COLORS = [
@@ -21,9 +22,20 @@ type CursorProps = {
   pos: [number, number];
   color?: string;
   interpolate?: boolean;
+  chat?: string;
+  chatting?: boolean;
+  onChat?: (event: any) => void;
 };
 
-const Cursor = ({ id, pos, color, interpolate = false }: CursorProps) => {
+const Cursor = ({
+  id,
+  pos,
+  color,
+  interpolate = false,
+  chat = "",
+  chatting = false,
+  onChat = () => null,
+}: CursorProps) => {
   const size = 16;
   const cursorColor = color ?? COLORS[id.charCodeAt(0) % COLORS.length];
   const [x, y] = pos;
@@ -41,6 +53,9 @@ const Cursor = ({ id, pos, color, interpolate = false }: CursorProps) => {
       `}
     >
       <CursorIcon color={cursorColor} />
+      {chatting && (
+        <ChatBubble text={chat} onChange={onChat} background={cursorColor} />
+      )}
     </div>
   );
 };
