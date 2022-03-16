@@ -53,7 +53,7 @@ const Cursor = ({
         pointer-events: none;
       `}
     >
-      <CursorIcon color={cursorColor} />
+      <CursorIcon fill={cursorColor} />
       {chatting && (
         <ChatBubble text={chat} onChange={onChat} background={cursorColor} />
       )}
