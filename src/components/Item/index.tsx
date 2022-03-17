@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { useCallback, useRef, memo } from "react";
 import * as Y from "yjs";
 import useItem from "../../hooks/useItem";
@@ -22,7 +21,6 @@ const Item = ({ item, idx }: ItemProps) => {
   const deltaRef = useRef<any>(null);
 
   const handlePointerDown = (event: PIXI.InteractionEvent) => {
-    console.log(event.data);
     switch (event.data.button) {
       case 0:
         const { x: eventX, y: eventY } = event.data.global;

@@ -8,13 +8,14 @@ import useWindowSize from "./hooks/useWindowSize";
 import { Stage } from "@inlet/react-pixi";
 import Cursor from "./components/Cursor";
 import Item from "./components/Item";
+import Jigsaw from "./components/Jigsaw";
+import jigsawURL from "./assets/greatWaveSmall.png";
 
 function App() {
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
   const [{ user, chatting }, { updateChat, updateActive }] = useUser();
   const { users } = useUsers();
   const { items } = useItems();
-
-  const { width: windowWidth, height: windowHeight } = useWindowSize();
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -58,6 +59,7 @@ function App() {
         {items.map((item, index) => {
           return <Item key={index} item={item} idx={index} />;
         })}
+        <Jigsaw n={3} m={2} src={jigsawURL} />
       </Stage>
 
       {/* Cursors */}
