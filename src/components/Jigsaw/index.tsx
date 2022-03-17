@@ -1,8 +1,24 @@
-import useJigsaw from "../../hooks/useJigsaw";
+import { useState, useEffect } from "react";
+import { useApp } from "@inlet/react-pixi";
+import usePieces from "../../hooks/usePieces";
 import Piece from "../Piece";
+import * as PIXI from "pixi.js";
 
-const Jigsaw = ({ n, m, src }: any) => {
-  const { jigsaw: pieces, baseTexture } = useJigsaw({ n, m, imagePath: src });
+const Jigsaw = ({ n, m, jigsawURL }: any) => {
+  const app = useApp();
+  const { pieces } = usePieces();
+  const [baseTexture, setBaseTexture] = useState<any>(null);
+
+  useEffect(() => {
+    const handleNewResource = () => {
+      const resource = app.loader.resources["jigsaw"];
+      setBaseTexture(PIXI.BaseTexture.from(resource.url));
+    };
+
+    delete app.loader.resources["jigsaw"];
+    app.loader.add("jigsaw", jigsawURL);
+    app.loader.load(handleNewResource);
+  }, [jigsawURL]);
 
   return (
     baseTexture &&

@@ -3,19 +3,19 @@ import * as Y from "yjs";
 import { doc } from "./Y";
 import useUser from "./hooks/useUser";
 import useUsers from "./hooks/useUsers";
-import useItems from "./hooks/useItems";
 import useWindowSize from "./hooks/useWindowSize";
 import { Stage } from "@inlet/react-pixi";
+import { JigsawProvider } from "./contexts/jigsaw";
+import usePieces from "./hooks/usePieces";
+import Piece from "./components/Piece";
 import Cursor from "./components/Cursor";
-import Item from "./components/Item";
-import Jigsaw from "./components/Jigsaw";
-import jigsawURL from "./assets/greatWaveSmall.png";
+import initialiseJigsaw from "./utils/initialiseJigsaw";
 
 function App() {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const [{ user, chatting }, { updateChat, updateActive }] = useUser();
   const { users } = useUsers();
-  const { items } = useItems();
+  const { pieces } = usePieces();
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -56,11 +56,33 @@ function App() {
         onContextMenu={handleContextMenu}
         onPointerDown={handlePointerDown}
       >
-        {items.map((item, index) => {
-          return <Item key={index} item={item} idx={index} />;
-        })}
-        <Jigsaw n={3} m={2} src={jigsawURL} />
+        {/* Pieces */}
+        <JigsawProvider>
+          {pieces &&
+            pieces.map((piece: any, index: number) => (
+              <Piece key={index} piece={piece} />
+            ))}
+        </JigsawProvider>
       </Stage>
+
+      <button
+        style={{ position: "absolute", right: 20, bottom: 20 }}
+        onClick={() => {
+          const yPieces = doc.getArray("pieces");
+          yPieces.delete(0, yPieces.length);
+        }}
+      >
+        Nuke
+      </button>
+
+      <button
+        style={{ position: "absolute", right: 100, bottom: 20 }}
+        onClick={() => {
+          initialiseJigsaw(6, 4);
+        }}
+      >
+        Initialise jigsaw
+      </button>
 
       {/* Cursors */}
       {Object.entries(users)

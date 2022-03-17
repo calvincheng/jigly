@@ -1,18 +1,24 @@
 import { useEffect, useCallback, useRef, useState, memo } from "react";
-import { Sprite } from "@inlet/react-pixi";
 import * as PIXI from "pixi.js";
+import * as Y from "yjs";
+import { Sprite } from "@inlet/react-pixi";
+import usePiece from "../../hooks/usePiece";
+import useJigsaw from "../../contexts/jigsaw";
 
 type PieceProps = {
-  i: number;
-  j: number;
-  size?: number;
-  edges?: number[];
-  baseTexture: any;
+  piece: Y.Map<number>;
 };
 
-const Piece = ({ i, j, size = 80, baseTexture }: PieceProps) => {
-  const [pos, updatePos] = useState([j * size, i * size]);
-  const [x, y] = pos;
+const Piece = ({ piece }: PieceProps) => {
+  const { baseTexture } = useJigsaw();
+  const [
+    {
+      pos: [x, y],
+      index: [i, j],
+      size,
+    },
+    { updatePos },
+  ] = usePiece(piece);
   const draggedRef = useRef<boolean>(false);
   const deltaRef = useRef<any>(null);
   const [texture, setTexture] = useState(PIXI.Texture.WHITE);
@@ -28,7 +34,7 @@ const Piece = ({ i, j, size = 80, baseTexture }: PieceProps) => {
           break;
       }
     },
-    [pos]
+    [x, y]
   );
 
   const handlePointerUp = useCallback(() => {
@@ -47,9 +53,12 @@ const Piece = ({ i, j, size = 80, baseTexture }: PieceProps) => {
   );
 
   useEffect(() => {
+    if (!baseTexture) return;
     const cropRectangle = new PIXI.Rectangle(j * size, i * size, size, size);
     setTexture(new PIXI.Texture(baseTexture, cropRectangle));
   }, [baseTexture, i, j, size]);
+
+  if (!baseTexture) return null;
 
   return (
     <Sprite
