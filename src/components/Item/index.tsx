@@ -11,7 +11,6 @@ type ItemProps = {
 };
 
 const Item = ({ item, idx }: ItemProps) => {
-  console.log(idx);
   const { pos, updatePos } = useItem(item);
   const [x, y] = pos;
   const draggedRef = useRef<boolean>(false);

@@ -5,15 +5,14 @@ const useItems = () => {
   const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
-    const yObjects = doc.getArray("items");
-    yObjects.observe((event) => {
-      console.log(event.changes);
-      setItems(yObjects.toArray());
+    const yItems = doc.getArray("items");
+    yItems.observe(() => {
+      setItems(yItems.toArray());
     });
 
     provider.on("sync", () => {
       console.log("synced");
-      setItems(yObjects.toArray());
+      setItems(yItems.toArray());
     });
   }, []);
 
