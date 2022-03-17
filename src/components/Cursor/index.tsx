@@ -21,7 +21,6 @@ type CursorProps = {
   id: string;
   pos: [number, number];
   color?: string;
-  interpolate?: boolean;
   chat?: string;
   chatting?: boolean;
   onChat?: (event: any) => void;
@@ -32,7 +31,6 @@ const Cursor = ({
   id,
   pos,
   color,
-  interpolate = false,
   chat = "",
   chatting = false,
   onChat = () => null,
@@ -53,7 +51,6 @@ const Cursor = ({
         height: ${size}px;
         width: ${size}px;
         border-radius: ${size / 2}px;
-        transition: ${interpolate ? "0.05s ease all" : "none"};
         pointer-events: none;
       `}
     >

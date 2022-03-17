@@ -1,67 +1,68 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { useEffect, useRef } from "react";
+import { useCallback, useRef, memo } from "react";
 import * as Y from "yjs";
 import useItem from "../../hooks/useItem";
 import { doc } from "../../Y";
+import { Sprite } from "@inlet/react-pixi";
+import * as PIXI from "pixi.js";
 
 type ItemProps = {
   item: Y.Map<number>;
   idx: number;
 };
 
+const size = 40;
+
 const Item = ({ item, idx }: ItemProps) => {
-  const { pos, updatePos } = useItem(item);
-  const [x, y] = pos;
+  const {
+    pos: [x, y],
+    updatePos,
+  } = useItem(item);
   const draggedRef = useRef<boolean>(false);
   const deltaRef = useRef<any>(null);
-  const size = 40;
 
-  const handlePointerDown = (event: any) => {
-    if (event.button === 0) {
-      const delta = [event.clientX - x, event.clientY - y];
-      draggedRef.current = true;
-      deltaRef.current = delta;
-      const [dx, dy] = delta;
-      updatePos([event.clientX - dx, event.clientY - dy]);
-    } else if (event.button === 2) {
-      event.stopPropagation();
-      console.log(`deleting index ${idx}`);
-      doc.getArray("items").delete(idx, 1);
+  const handlePointerDown = (event: PIXI.InteractionEvent) => {
+    console.log(event.data);
+    switch (event.data.button) {
+      case 0:
+        const { x: eventX, y: eventY } = event.data.global;
+        const delta = [eventX - x, eventY - y];
+        draggedRef.current = true;
+        deltaRef.current = delta;
+        break;
+      case 2:
+        event.stopPropagation();
+        console.log(`deleting index ${idx}`);
+        doc.getArray("items").delete(idx, 1);
+        break;
     }
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = useCallback(() => {
     draggedRef.current = false;
     deltaRef.current = null;
-  };
-
-  useEffect(() => {
-    const handlePointerMove = (event: any) => {
-      if (!draggedRef.current) return;
-      const [dx, dy] = deltaRef.current;
-      updatePos([event.clientX - dx, event.clientY - dy]);
-    };
-
-    document.addEventListener("pointermove", handlePointerMove);
-    return () => document.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
+  const handlePointerMove = (event: PIXI.InteractionEvent) => {
+    if (!draggedRef.current) return;
+    const { x: eventX, y: eventY } = event.data.global;
+    const [dx, dy] = deltaRef.current;
+    updatePos([eventX - dx, eventY - dy]);
+  };
+
   return (
-    <div
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      css={css`
-        position: absolute;
-        top: ${y}px;
-        left: ${x}px;
-        width: ${size}px;
-        height: ${size}px;
-        background: #f5e0dc;
-        transition: 0.05s ease all;
-      `}
+    <Sprite
+      texture={PIXI.Texture.WHITE}
+      width={size}
+      height={size}
+      x={x}
+      y={y}
+      interactive
+      pointerdown={handlePointerDown}
+      pointerup={handlePointerUp}
+      pointermove={handlePointerMove}
     />
   );
 };
 
-export default Item;
+export default memo(Item);

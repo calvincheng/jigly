@@ -1,32 +1,40 @@
-/** @jsxImportSource @emotion/react */
 import { useCallback } from "react";
-import { css } from "@emotion/react";
 import * as Y from "yjs";
 import { doc } from "./Y";
-import Cursor from "./components/Cursor";
-import Item from "./components/Item";
 import useUser from "./hooks/useUser";
 import useUsers from "./hooks/useUsers";
 import useItems from "./hooks/useItems";
+import useWindowSize from "./hooks/useWindowSize";
+import { Stage } from "@inlet/react-pixi";
+import Cursor from "./components/Cursor";
+import Item from "./components/Item";
 
 function App() {
   const [{ user, chatting }, { updateChat, updateActive }] = useUser();
   const { users } = useUsers();
   const { items } = useItems();
 
-  const handlePointerDown = useCallback((event: any) => {
-    if (event.button === 2) {
-      event.preventDefault();
-      const newItem = new Y.Map();
-      newItem.set("pos", [event.clientX, event.clientY]);
-      const yItems = doc.getArray("items");
-      yItems.push([newItem]);
-    }
-  }, []);
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
 
-  const handleContextMenu = useCallback((event: any) => {
-    event.preventDefault();
-  }, []);
+  const handlePointerDown = useCallback(
+    (event: React.PointerEvent<HTMLCanvasElement>) => {
+      if (event.button === 2) {
+        event.preventDefault();
+        const newItem = new Y.Map();
+        newItem.set("pos", [event.clientX, event.clientY]);
+        const yItems = doc.getArray("items");
+        yItems.push([newItem]);
+      }
+    },
+    []
+  );
+
+  const handleContextMenu = useCallback(
+    (event: React.MouseEvent<HTMLCanvasElement>) => {
+      event.preventDefault();
+    },
+    []
+  );
 
   const handlePointerEnter = useCallback(() => {
     updateActive(true);
@@ -37,21 +45,22 @@ function App() {
   }, []);
 
   return (
-    <div
-      onPointerDown={handlePointerDown}
-      onContextMenu={handleContextMenu}
-      onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
-      css={css`
-        height: 100vh;
-        width: 100vw;
-      `}
-    >
-      {/* Items */}
-      {items.map((item, index) => {
-        return <Item key={index} item={item} idx={index} />;
-      })}
-      {/* Peer cursors */}
+    <>
+      <Stage
+        height={windowHeight}
+        width={windowWidth}
+        options={{ backgroundColor: parseInt("1a1826", 16) }}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onContextMenu={handleContextMenu}
+        onPointerDown={handlePointerDown}
+      >
+        {items.map((item, index) => {
+          return <Item key={index} item={item} idx={index} />;
+        })}
+      </Stage>
+
+      {/* Cursors */}
       {Object.entries(users)
         .filter(([peerID]) => peerID !== user?.id)
         .map(([peerID, peer]) => (
@@ -61,11 +70,11 @@ function App() {
             pos={peer.pos}
             chatting={peer.chat.length > 0}
             chat={peer.chat}
-            interpolate
             active={peer.active}
           />
         ))}
-      {/* User (self) cursor */}
+
+      {/* User cursor */}
       {user && (
         <Cursor
           id={user.id}
@@ -76,7 +85,7 @@ function App() {
           active={user.active}
         />
       )}
-    </div>
+    </>
   );
 }
 
