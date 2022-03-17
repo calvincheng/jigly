@@ -78,7 +78,7 @@ function App() {
       <button
         style={{ position: "absolute", right: 80, bottom: 20 }}
         onClick={() => {
-          initialiseJigsaw(6, 4);
+          initialiseJigsaw(4, 3, 200);
         }}
       >
         Initialise jigsaw

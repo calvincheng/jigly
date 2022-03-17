@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import * as PIXI from "pixi.js";
-import imagePath from "../assets/greatWaveSmall.png";
+import imagePath from "../assets/greatWave.png";
 import { useApp as usePixi } from "@inlet/react-pixi";
 
 const JigsawContext = createContext<any>(null);

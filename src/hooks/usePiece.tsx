@@ -18,7 +18,12 @@ const usePiece = (piece: Y.Map<any>): any => {
   }, []);
 
   return [
-    { pos, size: piece.get("size"), index: piece.get("index") },
+    {
+      pos,
+      size: piece.get("size"),
+      index: piece.get("index"),
+      edges: piece.get("edges"),
+    },
     { updatePos },
   ];
 };
