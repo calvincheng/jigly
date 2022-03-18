@@ -5,22 +5,18 @@ import { Container, Sprite } from "@inlet/react-pixi";
 import usePiece from "../../hooks/usePiece";
 import useJigsaw from "../../contexts/jigsaw";
 import global2world from "../../utils/global2world";
+import getNearbyVertex from "../../utils/getNearbyVertex";
+import edge2tern from "../../utils/edge2tern";
+import { YPiece } from "../../types";
+
+const useMask = false;
 
 type PieceProps = {
   piece: Y.Map<number>;
+  pieces: YPiece[];
 };
 
-function edge2tern(edges: number[]): string {
-  // e.g.: [-1, 0, 1, 1] -> "1102"
-  const edgeMap = { "-1": 2, "0": 0, "1": 1 } as { [edge: string]: number };
-  const ternary: string = edges
-    .map((edge) => edgeMap[String(edge)])
-    .reverse()
-    .join("");
-  return ternary;
-}
-
-const Piece = ({ piece }: PieceProps) => {
+const Piece = ({ piece, pieces }: PieceProps) => {
   const {
     baseTextures: { jigsaw: jigsawBaseTexture, mask: maskBaseTexture },
     viewport,
@@ -60,11 +56,64 @@ const Piece = ({ piece }: PieceProps) => {
     [x, y]
   );
 
+  const snapToNeighbour = useCallback(
+    ({ tolerance = 20 }) => {
+      // Gather other pieces
+      const otherPieces = pieces.filter((p) => {
+        const [pi, pj]: any = p.get("index");
+        return i !== pi || j !== pj;
+      });
+
+      // Get candidate vertices to snap to by checking if each of the piece's 4
+      // vertices are close to a vertex of a nearby (i.e. within tolerance) piece
+      const targets = ["topleft", "topright", "bottomleft", "bottomright"];
+      const candidates = targets
+        .map((target) => {
+          return [
+            target,
+            getNearbyVertex(piece, otherPieces, target, tolerance),
+          ];
+        })
+        .filter(([_, candidate]) => Boolean(candidate)); // Keep valid (non-null) candidates
+
+      if (candidates.length > 0) {
+        // Find closest vertex
+        const bestCandidate = candidates.reduce((best, [target, candidate]) => {
+          const [cx, cy]: any = candidate;
+          const [bestX, bestY]: any = best;
+          const cDist = (x - cx) ** 2 + (y - cy) ** 2;
+          const bestDist = (x - bestX) ** 2 + (y - bestY) ** 2;
+          return cDist < bestDist ? [target, candidate] : best;
+        }, candidates[0]);
+
+        // Snap target to candidate
+        const [snapVertex, snapLocation] = bestCandidate;
+        const [snapX, snapY]: any = snapLocation;
+        switch (snapVertex) {
+          case "topleft":
+            updatePos([snapX, snapY]);
+            break;
+          case "topright":
+            updatePos([snapX - size, snapY]);
+            break;
+          case "bottomleft":
+            updatePos([snapX, snapY - size]);
+            break;
+          case "bottomright":
+            updatePos([snapX - size, snapY - size]);
+            break;
+        }
+      }
+    },
+    [updatePos, pieces, i, j, x, y]
+  );
+
   const handlePointerUp = useCallback(() => {
     draggedRef.current = false;
     deltaRef.current = null;
     viewport.drag({ pressDrag: true });
-  }, []);
+    snapToNeighbour({ tolerance: 20 });
+  }, [snapToNeighbour]);
 
   const handlePointerMove = useCallback(
     (event: PIXI.InteractionEvent) => {
@@ -82,8 +131,7 @@ const Piece = ({ piece }: PieceProps) => {
     [updatePos]
   );
 
-  // const knobSize = size * 0.34;
-  const knobSize = 0;
+  const knobSize = useMask ? size * 0.34 : 0;
 
   useEffect(() => {
     if (!jigsawBaseTexture) return;
@@ -138,12 +186,14 @@ const Piece = ({ piece }: PieceProps) => {
         mask={mask}
       />
 
-      {/* <Sprite // Mask */}
-      {/*   ref={(ref) => setMask(ref)} */}
-      {/*   texture={spriteMaskTexture} */}
-      {/*   width={sizeWithKnobs} */}
-      {/*   height={sizeWithKnobs} */}
-      {/* /> */}
+      {useMask && (
+        <Sprite // Mask
+          ref={(ref) => setMask(ref)}
+          texture={spriteMaskTexture}
+          width={sizeWithKnobs}
+          height={sizeWithKnobs}
+        />
+      )}
     </Container>
   );
 };

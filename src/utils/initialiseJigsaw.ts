@@ -1,6 +1,7 @@
 import * as Y from "yjs";
 import { doc } from "../Y";
 import generateJigsaw from "./generateJigsaw";
+import { YPiece } from "../types";
 
 const DEFAULT = {
   pos: [0, 0],
@@ -18,10 +19,10 @@ function initialiseJigsaw(n: number, m: number, size: number) {
   const edges = generateJigsaw(n, m);
 
   // Add new pieces to yPieces
-  const newPieces: Y.Map<any>[] = [];
+  const newPieces: YPiece[] = [];
   edges.forEach((row: any, i: number) => {
     row.forEach((edge: any, j: number) => {
-      const newPiece = new Y.Map();
+      const newPiece: YPiece = new Y.Map();
       newPiece.set("pos", [j * size ?? DEFAULT.size, i * size ?? DEFAULT.size]);
       newPiece.set("index", [i, j]);
       newPiece.set("size", size ?? DEFAULT.size);

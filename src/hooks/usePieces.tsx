@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { doc, provider } from "../Y";
+import { YPiece } from "../types";
+import * as Y from "yjs";
 
 const usePieces = () => {
-  const [pieces, setPieces] = useState<any[]>([]);
+  const [pieces, setPieces] = useState<YPiece[]>([]);
 
   useEffect(() => {
-    const yPieces = doc.getArray("pieces");
+    const yPieces: Y.Array<YPiece> = doc.getArray("pieces");
     yPieces.observe(() => {
       setPieces(yPieces.toArray());
     });
