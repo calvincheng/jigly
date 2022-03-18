@@ -4,6 +4,7 @@ import * as Y from "yjs";
 import { Container, Sprite } from "@inlet/react-pixi";
 import usePiece from "../../hooks/usePiece";
 import useJigsaw from "../../contexts/jigsaw";
+import global2world from "../../utils/global2world";
 
 type PieceProps = {
   piece: Y.Map<number>;
@@ -22,6 +23,7 @@ function edge2tern(edges: number[]): string {
 const Piece = ({ piece }: PieceProps) => {
   const {
     baseTextures: { jigsaw: jigsawBaseTexture, mask: maskBaseTexture },
+    viewport,
   } = useJigsaw();
   const [
     {
@@ -44,10 +46,14 @@ const Piece = ({ piece }: PieceProps) => {
     (event: PIXI.InteractionEvent) => {
       switch (event.data.button) {
         case 0:
-          const { x: eventX, y: eventY } = event.data.global;
-          const delta = [eventX - x, eventY - y];
+          const { x: worldX, y: worldY } = global2world(
+            event.data.global,
+            viewport
+          );
+          const delta = [worldX - x, worldY - y];
           draggedRef.current = true;
           deltaRef.current = delta;
+          viewport.drag({ pressDrag: false });
           break;
       }
     },
@@ -57,14 +63,21 @@ const Piece = ({ piece }: PieceProps) => {
   const handlePointerUp = useCallback(() => {
     draggedRef.current = false;
     deltaRef.current = null;
+    viewport.drag({ pressDrag: true });
   }, []);
 
   const handlePointerMove = useCallback(
     (event: PIXI.InteractionEvent) => {
       if (!draggedRef.current) return;
-      const { x: eventX, y: eventY } = event.data.global;
+      const { x: worldX, y: worldY } = global2world(
+        event.data.global,
+        viewport
+      );
       const [dx, dy] = deltaRef.current;
-      updatePos([eventX - dx, eventY - dy]);
+      const newX = worldX - dx;
+      const newY = worldY - dy;
+
+      updatePos([newX, newY]); // takes in stage coordinates
     },
     [updatePos]
   );

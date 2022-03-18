@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useRef, useCallback } from "react";
 import * as Y from "yjs";
 import { doc } from "./Y";
 import useWindowSize from "./hooks/useWindowSize";
@@ -8,10 +8,12 @@ import usePieces from "./hooks/usePieces";
 import Piece from "./components/Piece";
 import initialiseJigsaw from "./utils/initialiseJigsaw";
 import AwarenessOverlay from "./components/AwarenessOverlay";
+import Viewport from "./components/Viewport";
 
 function App() {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const { pieces } = usePieces();
+  const viewportRef = useRef<any>();
 
   const handlePointerDown = useCallback(
     (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -42,12 +44,14 @@ function App() {
         onContextMenu={handleContextMenu}
         onPointerDown={handlePointerDown}
       >
+        <Viewport height={windowHeight} width={windowWidth} ref={viewportRef} >
         {/* Pieces */}
-        <JigsawProvider>
+        <JigsawProvider viewport={viewportRef} >
           {pieces.map((piece: any, index: number) => (
             <Piece key={index} piece={piece} />
           ))}
         </JigsawProvider>
+        </Viewport>
       </Stage>
 
       <button
