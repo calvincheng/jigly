@@ -1,20 +1,16 @@
 import { useCallback } from "react";
 import * as Y from "yjs";
 import { doc } from "./Y";
-import useUser from "./hooks/useUser";
-import useUsers from "./hooks/useUsers";
 import useWindowSize from "./hooks/useWindowSize";
 import { Stage } from "@inlet/react-pixi";
 import { JigsawProvider } from "./contexts/jigsaw";
 import usePieces from "./hooks/usePieces";
 import Piece from "./components/Piece";
-import Cursor from "./components/Cursor";
 import initialiseJigsaw from "./utils/initialiseJigsaw";
+import AwarenessOverlay from "./components/AwarenessOverlay";
 
 function App() {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
-  const [{ user, chatting }, { updateChat, updateActive }] = useUser();
-  const { users } = useUsers();
   const { pieces } = usePieces();
 
   const handlePointerDown = useCallback(
@@ -37,36 +33,30 @@ function App() {
     []
   );
 
-  const handlePointerEnter = useCallback(() => {
-    updateActive(true);
-  }, []);
-
-  const handlePointerLeave = useCallback(() => {
-    updateActive(false);
-  }, []);
-
   return (
     <>
       <Stage
         height={windowHeight}
         width={windowWidth}
         options={{ backgroundColor: parseInt("1a1826", 16) }}
-        onPointerEnter={handlePointerEnter}
-        onPointerLeave={handlePointerLeave}
         onContextMenu={handleContextMenu}
         onPointerDown={handlePointerDown}
       >
         {/* Pieces */}
         <JigsawProvider>
-          {pieces &&
-            pieces.map((piece: any, index: number) => (
-              <Piece key={index} piece={piece} />
-            ))}
+          {pieces.map((piece: any, index: number) => (
+            <Piece key={index} piece={piece} />
+          ))}
         </JigsawProvider>
       </Stage>
 
       <button
-        style={{ position: "absolute", right: 20, bottom: 20 }}
+        style={{
+          position: "absolute",
+          right: 20,
+          bottom: 20,
+          userSelect: "none",
+        }}
         onClick={() => {
           const yPieces = doc.getArray("pieces");
           yPieces.delete(0, yPieces.length);
@@ -76,39 +66,25 @@ function App() {
       </button>
 
       <button
-        style={{ position: "absolute", right: 80, bottom: 20 }}
+        style={{
+          position: "absolute",
+          right: 80,
+          bottom: 20,
+          userSelect: "none",
+        }}
         onClick={() => {
-          initialiseJigsaw(4, 3, 200);
+          // initialiseJigsaw(160, 100, 6);
+          // initialiseJigsaw(80, 40, 12);
+          initialiseJigsaw(30, 15, 32);
+          // initialiseJigsaw(12, 8, 80);
+          // initialiseJigsaw(8, 4, 120);
+          // initialiseJigsaw(6, 3, 160);
         }}
       >
         Initialise jigsaw
       </button>
 
-      {/* Cursors */}
-      {Object.entries(users)
-        .filter(([peerID]) => peerID !== user?.id)
-        .map(([peerID, peer]) => (
-          <Cursor
-            key={peerID}
-            id={peerID}
-            pos={peer.pos}
-            chatting={peer.chat.length > 0}
-            chat={peer.chat}
-            active={peer.active}
-          />
-        ))}
-
-      {/* User cursor */}
-      {user && (
-        <Cursor
-          id={user.id}
-          pos={user.pos}
-          chatting={chatting}
-          chat={user.chat}
-          onChat={(event: any) => updateChat(event.target.value)}
-          active={user.active}
-        />
-      )}
+      <AwarenessOverlay />
     </>
   );
 }
