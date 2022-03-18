@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef, useState, memo } from "react";
+import { useEffect, useCallback, useRef, useState, useMemo, memo } from "react";
 import * as PIXI from "pixi.js";
 import * as Y from "yjs";
 import { Container, Sprite } from "@inlet/react-pixi";
@@ -98,14 +98,21 @@ const Piece = ({ piece }: PieceProps) => {
     setSpriteMaskTexture(new PIXI.Texture(maskBaseTexture, cropRectangle));
   }, [maskBaseTexture, edges]);
 
-  if (!jigsawBaseTexture) return null;
+  const hitArea = useMemo(
+    () => new PIXI.Rectangle(knobSize, knobSize, size, size),
+    [size]
+  );
+
   const sizeWithKnobs = size + 2 * knobSize;
+
+  if (!jigsawBaseTexture) return null;
 
   return (
     <Container
       x={x}
       y={y}
       interactive
+      hitArea={hitArea}
       pointerdown={handlePointerDown}
       pointerup={handlePointerUp}
       pointerupoutside={handlePointerUp}

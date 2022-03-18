@@ -75,9 +75,9 @@ function App() {
         onClick={() => {
           // initialiseJigsaw(160, 100, 6);
           // initialiseJigsaw(80, 40, 12);
-          initialiseJigsaw(30, 15, 32);
+          // initialiseJigsaw(30, 15, 32);
           // initialiseJigsaw(12, 8, 80);
-          // initialiseJigsaw(8, 4, 120);
+          initialiseJigsaw(8, 4, 120);
           // initialiseJigsaw(6, 3, 160);
         }}
       >
