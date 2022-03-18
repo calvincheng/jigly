@@ -1,3 +1,5 @@
+import * as Y from "yjs";
+
 export type Users = {
   [clientID: string]: {
     pos: [number, number];
@@ -12,3 +14,7 @@ export type User = {
   chat: string;
   active: boolean;
 };
+
+export type Edge = -1 | 0 | 1;
+
+export type YPiece = Y.Map<any>;

@@ -21,8 +21,6 @@ export const JigsawProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     pixi.loader.reset();
-    // delete pixi.loader.resources["jigsaw"];
-    // delete pixi.loader.resources["mask"];
     pixi.loader.add("jigsaw", imagePath);
     pixi.loader.add("mask", maskPath);
 
