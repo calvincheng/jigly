@@ -14,8 +14,12 @@ const PixiViewport = PixiComponent("Viewport", {
       interaction: props.app.renderer.plugins.interaction,
     });
 
-    viewport.drag().pinch().wheel().decelerate();
-    self.viewport = viewport;
+    viewport
+      .drag()
+      .pinch()
+      .wheel()
+      .decelerate()
+      .clampZoom({ minScale: props.minScale, maxScale: props.maxScale });
 
     return viewport;
   },

@@ -44,13 +44,19 @@ function App() {
         onContextMenu={handleContextMenu}
         onPointerDown={handlePointerDown}
       >
-        <Viewport height={windowHeight} width={windowWidth} ref={viewportRef} >
-        {/* Pieces */}
-        <JigsawProvider viewport={viewportRef} >
-          {pieces.map((piece: any, index: number) => (
-            <Piece key={index} piece={piece} />
-          ))}
-        </JigsawProvider>
+        <Viewport
+          height={windowHeight}
+          width={windowWidth}
+          minScale={0.2}
+          maxScale={2}
+          ref={viewportRef}
+        >
+          {/* Pieces */}
+          <JigsawProvider viewport={viewportRef}>
+            {pieces.map((piece: any, index: number) => (
+              <Piece key={index} piece={piece} />
+            ))}
+          </JigsawProvider>
         </Viewport>
       </Stage>
 
