@@ -41,7 +41,7 @@ const Piece = ({ piece, pieces }: PieceProps) => {
   const handlePointerDown = useCallback(
     (event: PIXI.InteractionEvent) => {
       switch (event.data.button) {
-        case 0:
+        default:
           const { x: worldX, y: worldY } = global2world(
             event.data.global,
             viewport

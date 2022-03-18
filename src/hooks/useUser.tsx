@@ -39,12 +39,12 @@ const useUser = () => {
 
   // Update self awareness
   useEffect(() => {
-    const handleMouseMove = (event: any) => {
+    const handlePointerMove = (event: any) => {
       awareness.setLocalStateField("pos", [event.clientX, event.clientY]);
       refetchUser();
     };
-    document.addEventListener("mousemove", handleMouseMove);
-    return () => document.removeEventListener("mousemove", handleMouseMove);
+    document.addEventListener("pointermove", handlePointerMove);
+    return () => document.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
   // Update self awareness

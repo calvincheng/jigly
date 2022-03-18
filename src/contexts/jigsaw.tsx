@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import * as PIXI from "pixi.js";
-import imagePath from "../assets/greatWave.png";
+// import imagePath from "../assets/greatWave.png";
+import imagePath from "../assets/greatWaveSmall.png";
 // import maskPath from "../assets/masksheet_tiny.png";
 // import maskPath from "../assets/masksheet_small.png";
 // import maskPath from "../assets/masksheet.png";
