@@ -1,29 +1,43 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import * as PIXI from "pixi.js";
 import imagePath from "../assets/greatWave.png";
+// import maskPath from "../assets/masksheet_tiny.png";
+// import maskPath from "../assets/masksheet_small.png";
+// import maskPath from "../assets/masksheet.png";
+import maskPath from "../assets/masksheet_nostroke.png";
 import { useApp as usePixi } from "@inlet/react-pixi";
 
 const JigsawContext = createContext<any>(null);
 
 const useJigsaw = () => useContext(JigsawContext);
 
+type BaseTextures = {
+  [textureName: string]: any;
+};
+
 export const JigsawProvider = ({ children }: { children: React.ReactNode }) => {
   const pixi = usePixi();
-  const [baseTexture, setBaseTexture] = useState<any>(null);
+  const [baseTextures, setBaseTextures] = useState<BaseTextures>({});
 
   useEffect(() => {
-    const handleNewResource = () => {
-      const resource = pixi.loader.resources["jigsaw"];
-      setBaseTexture(PIXI.BaseTexture.from(resource.url));
-    };
-
-    delete pixi.loader.resources["jigsaw"];
+    pixi.loader.reset();
+    // delete pixi.loader.resources["jigsaw"];
+    // delete pixi.loader.resources["mask"];
     pixi.loader.add("jigsaw", imagePath);
-    pixi.loader.load(handleNewResource);
+    pixi.loader.add("mask", maskPath);
+
+    pixi.loader.load(() => {
+      const newBaseTextures: BaseTextures = {};
+      ["jigsaw", "mask"].forEach((textureName) => {
+        const resource = pixi.loader.resources[textureName];
+        newBaseTextures[textureName] = PIXI.BaseTexture.from(resource.url);
+      });
+      setBaseTextures(newBaseTextures);
+    });
   }, [imagePath]);
 
   return (
-    <JigsawContext.Provider value={{ baseTexture }}>
+    <JigsawContext.Provider value={{ baseTextures }}>
       {children}
     </JigsawContext.Provider>
   );

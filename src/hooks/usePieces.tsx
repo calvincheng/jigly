@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { doc, provider } from "../Y";
 
 const usePieces = () => {
-  const [pieces, setPieces] = useState<any[] | null>(null);
+  const [pieces, setPieces] = useState<any[]>([]);
 
   useEffect(() => {
     const yPieces = doc.getArray("pieces");

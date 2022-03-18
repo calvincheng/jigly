@@ -9,17 +9,20 @@ type PieceProps = {
   piece: Y.Map<number>;
 };
 
-function edgeToUrl(edges: number[]): string {
+function edge2tern(edges: number[]): string {
+  // e.g.: [-1, 0, 1, 1] -> "1102"
   const edgeMap = { "-1": 2, "0": 0, "1": 1 } as { [edge: string]: number };
-  const encoded: string = edges
+  const ternary: string = edges
     .map((edge) => edgeMap[String(edge)])
     .reverse()
     .join("");
-  return encoded;
+  return ternary;
 }
 
 const Piece = ({ piece }: PieceProps) => {
-  const { baseTexture } = useJigsaw();
+  const {
+    baseTextures: { jigsaw: jigsawBaseTexture, mask: maskBaseTexture },
+  } = useJigsaw();
   const [
     {
       pos: [x, y],
@@ -32,6 +35,9 @@ const Piece = ({ piece }: PieceProps) => {
   const draggedRef = useRef<boolean>(false);
   const deltaRef = useRef<any>(null);
   const [texture, setTexture] = useState(PIXI.Texture.WHITE);
+  const [spriteMaskTexture, setSpriteMaskTexture] = useState(
+    PIXI.Texture.WHITE
+  );
   const [mask, setMask] = useState<any>(null);
 
   const handlePointerDown = useCallback(
@@ -63,23 +69,37 @@ const Piece = ({ piece }: PieceProps) => {
     [updatePos]
   );
 
+  // const knobSize = size * 0.34;
+  const knobSize = 0;
+
   useEffect(() => {
-    if (!baseTexture) return;
-    const margin = size / 3; // rough
+    if (!jigsawBaseTexture) return;
     const cropRectangle = new PIXI.Rectangle(
-      j * size - margin,
-      i * size - margin,
-      size + margin * 2,
-      size + margin * 2
+      j * size - knobSize,
+      i * size - knobSize,
+      size + knobSize * 2,
+      size + knobSize * 2
     );
-    setTexture(new PIXI.Texture(baseTexture, cropRectangle));
-  }, [baseTexture, i, j, size]);
+    setTexture(new PIXI.Texture(jigsawBaseTexture, cropRectangle));
+  }, [jigsawBaseTexture, i, j, size]);
 
-  if (!baseTexture) return null;
+  useEffect(() => {
+    if (!maskBaseTexture) return;
+    const encoded = parseInt(edge2tern(edges), 3);
+    const I = encoded % 9;
+    const J = Math.floor(encoded / 9);
+    const tileSize = 166;
+    const cropRectangle = new PIXI.Rectangle(
+      I * tileSize,
+      J * tileSize,
+      tileSize,
+      tileSize
+    );
+    setSpriteMaskTexture(new PIXI.Texture(maskBaseTexture, cropRectangle));
+  }, [maskBaseTexture, edges]);
 
-  const maskTexture = PIXI.Texture.from(
-    `/src/assets/masks/${edgeToUrl(edges)}.png`
-  );
+  if (!jigsawBaseTexture) return null;
+  const sizeWithKnobs = size + 2 * knobSize;
 
   return (
     <Container
@@ -88,15 +108,22 @@ const Piece = ({ piece }: PieceProps) => {
       interactive
       pointerdown={handlePointerDown}
       pointerup={handlePointerUp}
+      pointerupoutside={handlePointerUp}
       pointermove={handlePointerMove}
     >
-      <Sprite texture={texture} width={size} height={size} mask={mask} />
-      <Sprite // Mask
-        ref={(ref) => setMask(ref)}
-        texture={maskTexture}
-        width={size}
-        height={size}
+      <Sprite
+        texture={texture}
+        width={sizeWithKnobs}
+        height={sizeWithKnobs}
+        mask={mask}
       />
+
+      {/* <Sprite // Mask */}
+      {/*   ref={(ref) => setMask(ref)} */}
+      {/*   texture={spriteMaskTexture} */}
+      {/*   width={sizeWithKnobs} */}
+      {/*   height={sizeWithKnobs} */}
+      {/* /> */}
     </Container>
   );
 };
