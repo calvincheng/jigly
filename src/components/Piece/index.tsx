@@ -39,7 +39,7 @@ const Piece = ({ piece, pieces }: PieceProps) => {
   const handlePointerDown = useCallback(
     (event: PIXI.InteractionEvent) => {
       switch (event.data.button) {
-        case 0:
+        default:
           const { x: eventX, y: eventY } = event.data.global;
           const delta = [eventX - x, eventY - y];
           draggedRef.current = true;
