@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { memo } from "react";
 import { css } from "@emotion/react";
 import CursorIcon from "./CursorIcon";
 import ChatBubble from "../ChatBubble";
@@ -62,4 +63,4 @@ const Cursor = ({
   );
 };
 
-export default Cursor;
+export default memo(Cursor);
