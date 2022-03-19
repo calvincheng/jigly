@@ -4,7 +4,6 @@ import * as Y from "yjs";
 import { Container, Sprite } from "@inlet/react-pixi";
 import usePiece from "../../hooks/usePiece";
 import useJigsaw from "../../contexts/jigsaw";
-import viewport2world from "../../utils/viewport2world";
 import getNearbyVertex from "../../utils/getNearbyVertex";
 import edge2tern from "../../utils/edge2tern";
 import { YPiece } from "../../types";
@@ -41,10 +40,7 @@ const Piece = ({ piece, pieces }: PieceProps) => {
     (event: PIXI.InteractionEvent) => {
       switch (event.data.button) {
         default:
-          const { x: worldX, y: worldY } = viewport2world(
-            event.data.global,
-            viewport
-          );
+          const { x: worldX, y: worldY } = viewport.toWorld(event.data.global);
           const delta = [worldX - x, worldY - y];
           draggedRef.current = true;
           deltaRef.current = delta;
@@ -117,10 +113,7 @@ const Piece = ({ piece, pieces }: PieceProps) => {
   const handlePointerMove = useCallback(
     (event: PIXI.InteractionEvent) => {
       if (!draggedRef.current) return;
-      const { x: worldX, y: worldY } = viewport2world(
-        event.data.global,
-        viewport
-      );
+      const { x: worldX, y: worldY } = viewport.toWorld(event.data.global);
       const [dx, dy] = deltaRef.current;
       const newX = worldX - dx;
       const newY = worldY - dy;
