@@ -18,3 +18,9 @@ export type User = {
 export type Edge = -1 | 0 | 1;
 
 export type YPiece = Y.Map<any>;
+
+export type SnapCandidate = {
+  piece: YPiece;
+  vertex: number[];
+};
+

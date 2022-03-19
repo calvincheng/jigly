@@ -15,7 +15,7 @@ const COLORS = [
   "#89DCEB", // Sky
   "#DDB6F2", // Mauve
   "#F5C2E7", // Pink
-  "#F2CDCD", // Flamingo
+  // "#F2CDCD", // Flamingo
 ];
 
 type CursorProps = {
@@ -56,6 +56,7 @@ const Cursor = ({
       `}
     >
       <CursorIcon fill={cursorColor} />
+
       {chatting && (
         <ChatBubble text={chat} onChange={onChat} background={cursorColor} />
       )}

@@ -41,17 +41,17 @@ export const Awareness = () => {
           />
         ))}
 
-      {/* User cursor */}
-      {user && (
-        <Cursor
-          id={user.id}
-          pos={user.pos}
-          chatting={chatting}
-          chat={user.chat}
-          onChat={(event: any) => updateChat(event.target.value)}
-          active={user.active}
-        />
-      )}
+      {/* {/1* User cursor *1/} */}
+      {/* {user && ( */}
+      {/*   <Cursor */}
+      {/*     id={user.id} */}
+      {/*     pos={user.pos} */}
+      {/*     chatting={chatting} */}
+      {/*     chat={user.chat} */}
+      {/*     onChat={(event: any) => updateChat(event.target.value)} */}
+      {/*     active={user.active} */}
+      {/*   /> */}
+      {/* )} */}
     </>
   );
 };

@@ -1,6 +1,5 @@
 import { useRef, useCallback } from "react";
 import * as PIXI from "pixi.js";
-import * as Y from "yjs";
 import { doc } from "./Y";
 import useWindowSize from "./hooks/useWindowSize";
 import { Stage, Sprite, Graphics } from "@inlet/react-pixi";
@@ -8,26 +7,14 @@ import { JigsawProvider } from "./contexts/jigsaw";
 import usePieces from "./hooks/usePieces";
 import Piece from "./components/Piece";
 import initialiseJigsaw from "./utils/initialiseJigsaw";
+import checkComplete from "./utils/checkComplete";
 import AwarenessOverlay from "./components/AwarenessOverlay";
 import Viewport from "./components/Viewport";
 
 function App() {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const { pieces } = usePieces();
-  const viewportRef = useRef<any>();
-
-  const handlePointerDown = useCallback(
-    (event: React.PointerEvent<HTMLCanvasElement>) => {
-      if (event.button === 2) {
-        event.preventDefault();
-        const newItem = new Y.Map();
-        newItem.set("pos", [event.clientX, event.clientY]);
-        const yItems = doc.getArray("items");
-        yItems.push([newItem]);
-      }
-    },
-    []
-  );
+  const viewportRef = useRef<HTMLElement>();
 
   const handleContextMenu = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
@@ -46,7 +33,6 @@ function App() {
         height={stageHeight}
         options={{ backgroundColor: 0x1a1826 }}
         onContextMenu={handleContextMenu}
-        onPointerDown={handlePointerDown}
       >
         <Viewport
           screenWidth={windowWidth}
@@ -58,9 +44,9 @@ function App() {
           ref={viewportRef}
         >
           {/* Pieces */}
-          <JigsawProvider>
+          <JigsawProvider pieces={pieces}>
             {pieces.map((piece: any, index: number) => (
-              <Piece key={index} piece={piece} pieces={pieces} />
+              <Piece key={index} piece={piece} />
             ))}
           </JigsawProvider>
           <Graphics
@@ -114,6 +100,18 @@ function App() {
         }}
       >
         Initialise jigsaw
+      </button>
+
+      <button
+        style={{
+          position: "absolute",
+          right: 220,
+          bottom: 20,
+          userSelect: "none",
+        }}
+        onClick={() => console.log(checkComplete(pieces))}
+      >
+        Check complete
       </button>
 
       <AwarenessOverlay />

@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import * as PIXI from "pixi.js";
-// import imagePath from "../assets/greatWave.png";
-import imagePath from "../assets/greatWaveSmall.png";
+import imagePath from "../assets/greatWave.png";
+// import imagePath from "../assets/greatWaveSmall.png";
 // import maskPath from "../assets/masksheet_tiny.png";
 // import maskPath from "../assets/masksheet_small.png";
 // import maskPath from "../assets/masksheet.png";
 import maskPath from "../assets/masksheet_nostroke.png";
 import { useApp as usePixi } from "@inlet/react-pixi";
+import { YPiece } from "../types";
 
 const JigsawContext = createContext<any>(null);
 
@@ -16,7 +17,12 @@ type BaseTextures = {
   [textureName: string]: any;
 };
 
-export const JigsawProvider = ({ children }: { children: React.ReactNode }) => {
+type JigsawProviderProps = {
+  children: React.ReactNode;
+  pieces: YPiece[];
+};
+
+export const JigsawProvider = ({ pieces, children }: JigsawProviderProps) => {
   const pixi = usePixi();
   const [baseTextures, setBaseTextures] = useState<BaseTextures>({});
 
@@ -36,7 +42,7 @@ export const JigsawProvider = ({ children }: { children: React.ReactNode }) => {
   }, [imagePath]);
 
   return (
-    <JigsawContext.Provider value={{ baseTextures }}>
+    <JigsawContext.Provider value={{ baseTextures, pieces }}>
       {children}
     </JigsawContext.Provider>
   );
