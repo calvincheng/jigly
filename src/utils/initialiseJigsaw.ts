@@ -11,10 +11,6 @@ const DEFAULT = {
 };
 
 function initialiseJigsaw(n: number, m: number, size: number) {
-  // Clear existing pieces
-  const yPieces = doc.getArray("pieces");
-  yPieces.delete(0, yPieces.length);
-
   // Generate edges
   const edges = generateJigsaw(n, m);
 
@@ -30,7 +26,12 @@ function initialiseJigsaw(n: number, m: number, size: number) {
       newPieces.push(newPiece);
     });
   });
-  yPieces.push(newPieces);
+
+  const yPieces = doc.getArray("pieces");
+  doc.transact(() => {
+    yPieces.delete(0, yPieces.length); // Clear existing pieces
+    yPieces.push(newPieces);
+  });
 }
 
 export default initialiseJigsaw;

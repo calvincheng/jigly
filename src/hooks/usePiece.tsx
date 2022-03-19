@@ -14,8 +14,9 @@ const usePiece = (piece: Y.Map<any>): any => {
       setPos(piece.get("pos"));
     };
     piece.observe(handleUpdate);
+    handleUpdate();
     return () => piece.unobserve(handleUpdate);
-  }, []);
+  }, [piece]);
 
   return [
     {
