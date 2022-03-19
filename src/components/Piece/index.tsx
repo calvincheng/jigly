@@ -7,6 +7,7 @@ import useJigsaw from "../../contexts/jigsaw";
 import { useViewport } from "../Viewport";
 import edge2tern from "../../utils/edge2tern";
 import snapPieceToNeighbour from "../../utils/snapPieceToNeighbour";
+import checkComplete from "../../utils/checkComplete";
 
 const useMask = false;
 
@@ -55,6 +56,7 @@ const Piece = ({ piece }: PieceProps) => {
     deltaRef.current = null;
     viewport.drag({ pressDrag: true });
     snapPieceToNeighbour(piece, pieces, { tolerance: 20 });
+    console.log(`Complete: ${checkComplete(pieces)}`);
   }, [piece, pieces]);
 
   const handlePointerMove = useCallback(
