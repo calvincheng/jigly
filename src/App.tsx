@@ -1,8 +1,9 @@
 import { useRef, useCallback } from "react";
+import * as PIXI from "pixi.js";
 import * as Y from "yjs";
 import { doc } from "./Y";
 import useWindowSize from "./hooks/useWindowSize";
-import { Stage } from "@inlet/react-pixi";
+import { Stage, Sprite, Graphics } from "@inlet/react-pixi";
 import { JigsawProvider } from "./contexts/jigsaw";
 import usePieces from "./hooks/usePieces";
 import Piece from "./components/Piece";
@@ -35,18 +36,23 @@ function App() {
     []
   );
 
+  const stageHeight = 3000; // 3200 limit for some reason
+  const stageWidth = 3000; // 3200 limit for some reason
+
   return (
     <>
       <Stage
-        height={windowHeight}
-        width={windowWidth}
-        options={{ backgroundColor: parseInt("1a1826", 16) }}
+        width={stageWidth}
+        height={stageHeight}
+        options={{ backgroundColor: 0x1a1826 }}
         onContextMenu={handleContextMenu}
         onPointerDown={handlePointerDown}
       >
         <Viewport
-          height={windowHeight}
-          width={windowWidth}
+          screenWidth={windowWidth}
+          screenHeight={windowHeight}
+          worldWidth={stageWidth}
+          worldHeight={stageHeight}
           minScale={0.2}
           maxScale={2}
           ref={viewportRef}
@@ -57,6 +63,20 @@ function App() {
               <Piece key={index} piece={piece} pieces={pieces} />
             ))}
           </JigsawProvider>
+          <Graphics
+            draw={(g) => {
+              g.lineStyle(10, 0xff0000);
+              g.drawRect(0, 0, stageWidth, stageHeight);
+            }}
+          />
+          <Sprite
+            x={-10}
+            y={-10}
+            width={20}
+            height={20}
+            texture={PIXI.Texture.WHITE}
+            tint={0x00ff00}
+          />
         </Viewport>
       </Stage>
 
@@ -88,9 +108,9 @@ function App() {
           // initialiseJigsaw(30, 15, 32);
           // initialiseJigsaw(12, 8, 80);
           // initialiseJigsaw(8, 4, 120);
-          initialiseJigsaw(8, 5, 24);
-          // initialiseJigsaw(6, 3, 160);
-          // initialiseJigsaw(3, 2, 100);
+          // initialiseJigsaw(8, 5, 24);
+          // initialiseJigsaw(1, 1, 300);
+          initialiseJigsaw(3, 2, 100);
         }}
       >
         Initialise jigsaw
