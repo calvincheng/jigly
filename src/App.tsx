@@ -52,7 +52,7 @@ function App() {
           ref={viewportRef}
         >
           {/* Pieces */}
-          <JigsawProvider viewport={viewportRef}>
+          <JigsawProvider>
             {pieces.map((piece: any, index: number) => (
               <Piece key={index} piece={piece} pieces={pieces} />
             ))}

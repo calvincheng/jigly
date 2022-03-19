@@ -16,7 +16,7 @@ type BaseTextures = {
   [textureName: string]: any;
 };
 
-export const JigsawProvider = ({ children, viewport }: { children: React.ReactNode, viewport: any }) => {
+export const JigsawProvider = ({ children }: { children: React.ReactNode }) => {
   const pixi = usePixi();
   const [baseTextures, setBaseTextures] = useState<BaseTextures>({});
 
@@ -36,7 +36,7 @@ export const JigsawProvider = ({ children, viewport }: { children: React.ReactNo
   }, [imagePath]);
 
   return (
-    <JigsawContext.Provider value={{ baseTextures, viewport: viewport.current }}>
+    <JigsawContext.Provider value={{ baseTextures }}>
       {children}
     </JigsawContext.Provider>
   );

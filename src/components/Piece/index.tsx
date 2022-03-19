@@ -8,6 +8,7 @@ import viewport2world from "../../utils/viewport2world";
 import getNearbyVertex from "../../utils/getNearbyVertex";
 import edge2tern from "../../utils/edge2tern";
 import { YPiece } from "../../types";
+import { useViewport } from "../Viewport";
 
 const useMask = false;
 
@@ -17,9 +18,9 @@ type PieceProps = {
 };
 
 const Piece = ({ piece, pieces }: PieceProps) => {
+  const viewport = useViewport();
   const {
     baseTextures: { jigsaw: jigsawBaseTexture, mask: maskBaseTexture },
-    viewport,
   } = useJigsaw();
   const [
     {
@@ -33,9 +34,7 @@ const Piece = ({ piece, pieces }: PieceProps) => {
   const draggedRef = useRef<boolean>(false);
   const deltaRef = useRef<any>(null);
   const [texture, setTexture] = useState(PIXI.Texture.WHITE);
-  const [spriteMaskTexture, setSpriteMaskTexture] = useState(
-    PIXI.Texture.WHITE
-  );
+  const [maskTexture, setMaskTexture] = useState(PIXI.Texture.WHITE);
   const [mask, setMask] = useState<any>(null);
 
   const handlePointerDown = useCallback(
@@ -156,7 +155,7 @@ const Piece = ({ piece, pieces }: PieceProps) => {
       tileSize,
       tileSize
     );
-    setSpriteMaskTexture(new PIXI.Texture(maskBaseTexture, cropRectangle));
+    setMaskTexture(new PIXI.Texture(maskBaseTexture, cropRectangle));
   }, [maskBaseTexture, edges]);
 
   const hitArea = useMemo(
@@ -189,7 +188,7 @@ const Piece = ({ piece, pieces }: PieceProps) => {
       {useMask && (
         <Sprite // Mask
           ref={(ref) => setMask(ref)}
-          texture={spriteMaskTexture}
+          texture={maskTexture}
           width={sizeWithKnobs}
           height={sizeWithKnobs}
         />
