@@ -21,8 +21,8 @@ const ChatBubble = ({
         align-items: center;
         justify-items: start;
         padding: 8px 12px;
-        transform: translate(16px, -4px);
-        border: 2px solid #f5e0dc;
+        transform: translate(14px, -12px);
+        border: 2px solid #000000d5;
         border-radius: 15px;
         border-top-left-radius: 0px;
         background: ${background};
@@ -50,8 +50,7 @@ const ChatBubble = ({
           border: none;
           appearance: none;
           &::placeholder {
-            color: #161320;
-            opacity: 0.6;
+            color: #00000066;
           }
         `}
       />
@@ -60,7 +59,7 @@ const ChatBubble = ({
           visibility: hidden;
           grid-area: 1 / 1 / 2 / 2;
           font-weight: bold;
-          font-size: 14px;
+          font-size: 13px;
           white-space: pre;
         `}
       >
