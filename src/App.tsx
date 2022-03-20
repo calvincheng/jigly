@@ -1,4 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import { useRef, useCallback } from "react";
+import { css } from "@emotion/react";
 import * as PIXI from "pixi.js";
 import { doc } from "./Y";
 import useWindowSize from "./hooks/useWindowSize";
@@ -66,41 +68,34 @@ function App() {
         </Viewport>
       </Stage>
 
-      <button
-        style={{
-          position: "absolute",
-          right: 20,
-          bottom: 20,
-          userSelect: "none",
-        }}
-        onClick={() => {
-          const yPieces = doc.getArray("pieces");
-          yPieces.delete(0, yPieces.length);
-        }}
+      <div
+        css={css`
+          position: absolute;
+          right: 20px;
+          bottom: 20px;
+          display: flex;
+          gap: 12px;
+          button {
+            user-select: none;
+          }
+        `}
       >
-        Nuke
-      </button>
-
-      <button
-        style={{
-          position: "absolute",
-          right: 80,
-          bottom: 20,
-          userSelect: "none",
-        }}
-        onClick={() => {
-          // initialiseJigsaw(160, 100, 6);
-          // initialiseJigsaw(80, 40, 12);
-          // initialiseJigsaw(30, 15, 32);
-          // initialiseJigsaw(12, 8, 80);
-          // initialiseJigsaw(8, 4, 120);
-          // initialiseJigsaw(8, 5, 24);
-          // initialiseJigsaw(1, 1, 300);
-          initialiseJigsaw(3, 2, 100);
-        }}
-      >
-        Initialise jigsaw
-      </button>
+        <button
+          onClick={() => {
+            initialiseJigsaw(8, 14, 100);
+          }}
+        >
+          Initialise jigsaw
+        </button>
+        <button
+          onClick={() => {
+            const yPieces = doc.getArray("pieces");
+            yPieces.delete(0, yPieces.length);
+          }}
+        >
+          Nuke
+        </button>
+      </div>
 
       <AwarenessOverlay />
     </>
