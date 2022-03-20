@@ -7,7 +7,6 @@ import { JigsawProvider } from "./contexts/jigsaw";
 import usePieces from "./hooks/usePieces";
 import Piece from "./components/Piece";
 import initialiseJigsaw from "./utils/initialiseJigsaw";
-import checkComplete from "./utils/checkComplete";
 import AwarenessOverlay from "./components/AwarenessOverlay";
 import Viewport from "./components/Viewport";
 
@@ -100,18 +99,6 @@ function App() {
         }}
       >
         Initialise jigsaw
-      </button>
-
-      <button
-        style={{
-          position: "absolute",
-          right: 220,
-          bottom: 20,
-          userSelect: "none",
-        }}
-        onClick={() => console.log(checkComplete(pieces))}
-      >
-        Check complete
       </button>
 
       <AwarenessOverlay />
