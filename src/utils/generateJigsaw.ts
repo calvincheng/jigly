@@ -21,9 +21,12 @@ function generateJigsaw(n: number, m: number): Edge[][][] {
   const seen = new Set();
 
   // DFS propagation through matrix to create connections
-  function createConnection(node: number[]) {
+  // Stack is used to circumvent recursion limit
+  const stack: number[][] = [[0, 0]];
+  while (stack.length > 0) {
+    const node = stack.pop() as number[];
     const [i, j] = node;
-    if (seen.has(hash(node))) return;
+    if (seen.has(hash(node))) continue;
     seen.add(hash(node));
 
     const nbrs = [
@@ -41,13 +44,10 @@ function generateJigsaw(n: number, m: number): Edge[][][] {
         const edge = Math.random() < 0.5 ? -1 : 1;
         jigsaw[i][j][dir] = edge;
         jigsaw[nbri][nbrj][nbrDir] = -edge; // Neighbour must have opposing joint
-        createConnection(nbr);
+        stack.push(nbr);
       }
     });
   }
-
-  // Start DFS
-  createConnection([0, 0]);
 
   return jigsaw;
 }
