@@ -9,6 +9,7 @@ import Piece from "./components/Piece";
 import initialiseJigsaw from "./utils/initialiseJigsaw";
 import AwarenessOverlay from "./components/AwarenessOverlay";
 import Viewport from "./components/Viewport";
+import { WORLD_WIDTH, WORLD_HEIGHT } from "./constants";
 
 function App() {
   const { width: windowWidth, height: windowHeight } = useWindowSize();
@@ -22,8 +23,8 @@ function App() {
     []
   );
 
-  const stageHeight = 3000; // 3200 limit for some reason
-  const stageWidth = 3000; // 3200 limit for some reason
+  const stageWidth = windowWidth; // 3200 limit for some reason
+  const stageHeight = windowHeight; // 3200 limit for some reason
 
   return (
     <>
@@ -36,9 +37,9 @@ function App() {
         <Viewport
           screenWidth={windowWidth}
           screenHeight={windowHeight}
-          worldWidth={stageWidth}
-          worldHeight={stageHeight}
-          minScale={0.2}
+          worldWidth={WORLD_WIDTH} // stageWidth
+          worldHeight={WORLD_HEIGHT} // stageHeight
+          minScale={0.1}
           maxScale={2}
           ref={viewportRef}
         >

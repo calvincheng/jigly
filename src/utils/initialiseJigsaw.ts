@@ -2,13 +2,7 @@ import * as Y from "yjs";
 import { doc } from "../Y";
 import generateJigsaw from "./generateJigsaw";
 import { YPiece } from "../types";
-
-const DEFAULT = {
-  pos: [0, 0],
-  index: [0, 0],
-  size: 30,
-  edges: [0, 0, 0, 0],
-};
+import { WORLD_WIDTH, WORLD_HEIGHT } from "../constants";
 
 function initialiseJigsaw(n: number, m: number, size: number) {
   // Generate edges
@@ -19,9 +13,11 @@ function initialiseJigsaw(n: number, m: number, size: number) {
   edges.forEach((row: any, i: number) => {
     row.forEach((edge: any, j: number) => {
       const newPiece: YPiece = new Y.Map();
-      newPiece.set("pos", [j * size ?? DEFAULT.size, i * size ?? DEFAULT.size]);
+      const offsetX = (WORLD_WIDTH - n * size) / 2;
+      const offsetY = (WORLD_HEIGHT - m * size) / 2;
+      newPiece.set("pos", [offsetX + j * size, offsetY + i * size]);
       newPiece.set("index", [i, j]);
-      newPiece.set("size", size ?? DEFAULT.size);
+      newPiece.set("size", size);
       newPiece.set("edges", edge);
       newPieces.push(newPiece);
     });
