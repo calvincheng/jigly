@@ -3,7 +3,7 @@ const CursorIcon = ({ fill = "white", stroke = "#161320" }) => {
     <svg
       width="24"
       height="34"
-      viewBox="0 0 1000 1000"
+      viewBox="0 0 1000 1410" // 24:34 === 1000:1410
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

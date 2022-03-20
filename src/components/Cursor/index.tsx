@@ -51,7 +51,6 @@ const Cursor = ({
         position: absolute;
         height: ${size}px;
         width: ${size}px;
-        border-radius: ${size / 2}px;
         pointer-events: none;
       `}
     >
