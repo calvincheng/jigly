@@ -12,11 +12,20 @@
   --color-sky: #89dceb;
   --color-black0: #161320;
   --color-black1: #1a1826;
+  --color-black2: #1e1e2e;
+  --color-black3: #302d41;
+  --color-black4: #575268;
+  --color-grey0: #6e6c7e; 
+  --color-grey1: #988ba2; 
+  --color-grey2: #c3bac6; 
+  --color-white: #d9e0ee;
+  --color-lavender: #c9cbff;
+  --color-rosewater: #f5e0dc;
 }
 
 * {
   box-sizing: border-box;
-  /* cursor: none; */
+  cursor: none;
 }
 
 html {
