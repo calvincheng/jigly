@@ -47,10 +47,27 @@ const PixiViewport = PixiComponent("Viewport", {
 
     const handleMovedEnd = debounce(() => {
       viewport.moving = false;
+      const lastViewportMove = {
+        corner: viewport.corner,
+        scale: viewport.scaled,
+      };
+      localStorage.setItem(
+        "lastViewportMove",
+        JSON.stringify(lastViewportMove)
+      );
     }, 150);
 
     viewport.on("moved", handleMoved);
     viewport.on("moved-end", handleMovedEnd);
+    const lastViewportMove = localStorage.getItem("lastViewportMove");
+    if (lastViewportMove !== null) {
+      const { corner, scale } = JSON.parse(lastViewportMove);
+      viewport.setZoom(scale);
+      viewport.moveCorner(corner);
+    } else {
+      viewport.fit();
+      viewport.moveCenter(worldWidth / 2, worldHeight / 2);
+    }
 
     return viewport;
   },
