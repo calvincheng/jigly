@@ -1,35 +1,56 @@
 import { Viewport } from "pixi-viewport";
 import { PixiComponent } from "@inlet/react-pixi";
+import debounce from "lodash.debounce";
 
 // https://github.com/davidfig/pixi-viewport/issues/233
 const PixiViewport = PixiComponent("Viewport", {
   create: (props: any) => {
-    const { worldWidth, worldHeight } = props;
+    const { screenWidth, screenHeight, worldWidth, worldHeight } = props;
     const viewport = new Viewport({
-      // screenWidth: window.innerWidth,
-      // screenHeight: window.innerHeight,
-      ...(worldWidth ? { worldWidth: worldWidth } : {}),
-      ...(worldHeight ? { worldWidth: worldHeight } : {}),
+      ...(screenWidth ? { screenWidth } : {}),
+      ...(screenHeight ? { screenHeight } : {}),
+      ...(worldWidth ? { worldWidth } : {}),
+      ...(worldHeight ? { worldHeight } : {}),
       passiveWheel: false,
 
       // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
       interaction: props.app.renderer.plugins.interaction,
     });
 
-    const margin = 1000;
-
     viewport
       .drag()
+      .decelerate()
       .pinch()
       .wheel({ trackpadPinch: true, wheelZoom: false })
-      .decelerate()
       .clamp({
-        left: 0 - margin,
-        right: worldWidth + margin,
-        top: 0 - margin,
-        bottom: worldHeight + margin,
+        left: 0,
+        right: worldWidth,
+        top: 0,
+        bottom: worldHeight,
       })
       .clampZoom({ minScale: props.minScale, maxScale: props.maxScale });
+
+    viewport.moving = false;
+
+    const handleMoved = () => {
+      // NOTE: Prevents clamp-jitter for some reason
+      viewport.clamp({
+        left: 0,
+        right: worldWidth,
+        top: 0,
+        bottom: worldHeight,
+      });
+      if (!viewport.moving) {
+        viewport.moving = true;
+      }
+    };
+
+    const handleMovedEnd = debounce(() => {
+      viewport.moving = false;
+    }, 150);
+
+    viewport.on("moved", handleMoved);
+    viewport.on("moved-end", handleMovedEnd);
 
     return viewport;
   },

@@ -97,7 +97,7 @@ function App() {
         </button>
       </div>
 
-      <AwarenessOverlay />
+      <AwarenessOverlay viewport={viewportRef.current} />
     </>
   );
 }

@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { awareness } from "../Y";
 import { User } from "../types";
+import throttle from "lodash.throttle";
 
-const useUser = () => {
+const useUser = (viewport: any) => {
   const [user, setUser] = useState<User>();
+  const [pos, setPos] = useState<any>([0, 0]);
   const [chatting, setChatting] = useState<boolean>(false);
 
   const refetchUser = useCallback<any>(() => {
@@ -35,17 +37,49 @@ const useUser = () => {
     };
     awareness.setLocalState(initial);
     setUser(initial);
+    return () => {
+      awareness.setLocalState(null);
+    };
   }, []);
 
-  // Update self awareness
   useEffect(() => {
-    const handlePointerMove = (event: any) => {
-      awareness.setLocalStateField("pos", [event.clientX, event.clientY]);
+    const handlePointerEnter = () => {
+      updateActive(true);
+    };
+
+    const handlePointerLeave = () => {
+      updateActive(false);
+    };
+
+    document.addEventListener("pointerenter", handlePointerEnter);
+    document.addEventListener("pointerleave", handlePointerLeave);
+
+    return () => {
+      document.removeEventListener("pointerenter", handlePointerEnter);
+      document.removeEventListener("pointerleave", handlePointerLeave);
+    };
+  }, []);
+
+  useEffect(() => {
+    const broadcastPos = throttle(([x, y]: number[]) => {
+      const { x: worldX, y: worldY } = viewport.toWorld({ x, y });
+      awareness.setLocalStateField("pos", [worldX, worldY]);
       refetchUser();
+    }, 50);
+
+    const handlePointerMove = (event: any) => {
+      const { clientX: x, clientY: y } = event;
+      // Update local position
+      setPos([x, y]);
+
+      // Broadcast world position
+      if (!viewport.moving) {
+        broadcastPos([x, y]);
+      }
     };
     document.addEventListener("pointermove", handlePointerMove);
     return () => document.removeEventListener("pointermove", handlePointerMove);
-  }, []);
+  }, [viewport]);
 
   // Update self awareness
   useEffect(() => {
@@ -71,7 +105,7 @@ const useUser = () => {
   }, []);
 
   return [
-    { user, chatting },
+    { user, pos, chatting },
     { updateChat, updateActive },
   ];
 };

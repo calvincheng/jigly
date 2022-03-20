@@ -6,6 +6,7 @@ const useUsers = () => {
   const [users, setUsers] = useState<Users>({});
 
   useEffect(() => {
+    // Handle new clients entering and leaving
     const handleAwarenessChange = () => {
       const newPeers: Users = {};
       awareness.getStates().forEach((state, clientID) => {

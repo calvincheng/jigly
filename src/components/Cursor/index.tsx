@@ -26,6 +26,7 @@ type CursorProps = {
   chatting?: boolean;
   onChat?: (event: any) => void;
   active?: boolean;
+  interpolate?: boolean;
 };
 
 const Cursor = ({
@@ -36,6 +37,7 @@ const Cursor = ({
   chatting = false,
   onChat = () => null,
   active = true,
+  interpolate = false,
 }: CursorProps) => {
   const size = 16;
   const cursorColor = color ?? COLORS[id.charCodeAt(0) % COLORS.length];
@@ -52,6 +54,8 @@ const Cursor = ({
         height: ${size}px;
         width: ${size}px;
         pointer-events: none;
+        transition: none;
+        /* transition: ${interpolate ? "0.15s ease all" : "none"}; */
       `}
     >
       <CursorIcon fill={cursorColor} />
