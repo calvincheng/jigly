@@ -16,15 +16,20 @@ const PixiViewport = PixiComponent("Viewport", {
       interaction: props.app.renderer.plugins.interaction,
     });
 
+    const margin = 1000;
+
     viewport
       .drag()
       .pinch()
-      .wheel()
+      .wheel({ trackpadPinch: true, wheelZoom: false })
       .decelerate()
-      .clamp({ left: 0, right: worldWidth, top: 0, bottom: worldHeight })
+      .clamp({
+        left: 0 - margin,
+        right: worldWidth + margin,
+        top: 0 - margin,
+        bottom: worldHeight + margin,
+      })
       .clampZoom({ minScale: props.minScale, maxScale: props.maxScale });
-
-    viewport.fit();
 
     return viewport;
   },
