@@ -1,15 +1,13 @@
 import { useEffect, useCallback, useRef, useState, useMemo, memo } from "react";
 import * as PIXI from "pixi.js";
 import * as Y from "yjs";
-import { Container, Sprite } from "@inlet/react-pixi";
+import { Graphics } from "@inlet/react-pixi";
 import usePiece from "../../hooks/usePiece";
 import useJigsaw from "../../contexts/jigsaw";
 import { useViewport } from "../Viewport";
-import edge2tern from "../../utils/edge2tern";
 import snapPieceToNeighbour from "../../utils/snapPieceToNeighbour";
 import checkComplete from "../../utils/checkComplete";
-
-const useMask = false;
+import drawPiece from "../../utils/drawPiece";
 
 type PieceProps = {
   piece: Y.Map<number>;
@@ -18,7 +16,7 @@ type PieceProps = {
 const Piece = ({ piece }: PieceProps) => {
   const viewport = useViewport();
   const {
-    baseTextures: { jigsaw: jigsawBaseTexture, mask: maskBaseTexture },
+    baseTextures: { jigsaw: jigsawBaseTexture },
     pieces,
   } = useJigsaw();
   const [
@@ -26,15 +24,14 @@ const Piece = ({ piece }: PieceProps) => {
       pos: [x, y],
       index: [i, j],
       size,
-      edges,
     },
     { updatePos },
   ] = usePiece(piece);
   const draggedRef = useRef<boolean>(false);
   const deltaRef = useRef<any>(null);
   const [texture, setTexture] = useState(PIXI.Texture.WHITE);
-  const [maskTexture, setMaskTexture] = useState(PIXI.Texture.WHITE);
-  const [mask, setMask] = useState<any>(null);
+
+  const knobSize = size * 0.2;
 
   const handlePointerDown = useCallback(
     (event: PIXI.InteractionEvent) => {
@@ -55,7 +52,7 @@ const Piece = ({ piece }: PieceProps) => {
     draggedRef.current = false;
     deltaRef.current = null;
     viewport.drag({ pressDrag: true });
-    snapPieceToNeighbour(piece, pieces, { tolerance: 20 });
+    snapPieceToNeighbour(piece, pieces, { tolerance: 20 / viewport.scaled });
     console.log(`Complete: ${checkComplete(pieces)}`);
   }, [piece, pieces]);
 
@@ -72,8 +69,6 @@ const Piece = ({ piece }: PieceProps) => {
     [updatePos]
   );
 
-  const knobSize = useMask ? size * 0.34 : 0;
-
   useEffect(() => {
     if (!jigsawBaseTexture) return;
     const cropRectangle = new PIXI.Rectangle(
@@ -85,57 +80,26 @@ const Piece = ({ piece }: PieceProps) => {
     setTexture(new PIXI.Texture(jigsawBaseTexture, cropRectangle));
   }, [jigsawBaseTexture, i, j, size]);
 
-  useEffect(() => {
-    if (!maskBaseTexture) return;
-    const encoded = parseInt(edge2tern(edges), 3);
-    const I = encoded % 9;
-    const J = Math.floor(encoded / 9);
-    const tileSize = 166;
-    const cropRectangle = new PIXI.Rectangle(
-      I * tileSize,
-      J * tileSize,
-      tileSize,
-      tileSize
-    );
-    setMaskTexture(new PIXI.Texture(maskBaseTexture, cropRectangle));
-  }, [maskBaseTexture, edges]);
-
-  const hitArea = useMemo(
-    () => new PIXI.Rectangle(knobSize, knobSize, size, size),
-    [size]
+  const draw = useCallback(
+    (g: PIXI.Graphics) => {
+      drawPiece(g, piece, texture);
+    },
+    [texture, i, j, size]
   );
-
-  const sizeWithKnobs = size + 2 * knobSize;
 
   if (!jigsawBaseTexture) return null;
 
   return (
-    <Container
+    <Graphics
+      draw={draw}
       x={x}
       y={y}
       interactive
-      hitArea={hitArea}
       pointerdown={handlePointerDown}
       pointerup={handlePointerUp}
       pointerupoutside={handlePointerUp}
       pointermove={handlePointerMove}
-    >
-      <Sprite
-        texture={texture}
-        width={sizeWithKnobs}
-        height={sizeWithKnobs}
-        mask={mask}
-      />
-
-      {useMask && (
-        <Sprite // Mask
-          ref={(ref) => setMask(ref)}
-          texture={maskTexture}
-          width={sizeWithKnobs}
-          height={sizeWithKnobs}
-        />
-      )}
-    </Container>
+    />
   );
 };
 

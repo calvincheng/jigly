@@ -24,3 +24,11 @@ export type SnapCandidate = {
   vertex: number[];
 };
 
+export type Bezier = {
+  cx1: number;
+  cy1: number;
+  cx2: number;
+  cy2: number;
+  ex: number;
+  ey: number;
+};
