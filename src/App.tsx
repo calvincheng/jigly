@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useCallback } from "react";
 import { css } from "@emotion/react";
-import * as PIXI from "pixi.js";
+import { useRef, useCallback } from "react";
 import { doc } from "Y";
 import useWindowSize from "hooks/useWindowSize";
-import { Stage, Sprite, Graphics } from "@inlet/react-pixi";
+import { Stage } from "@inlet/react-pixi";
 import { JigsawProvider } from "contexts/jigsaw";
 import usePieces from "hooks/usePieces";
 import Piece from "components/Piece";
 import initialiseJigsaw from "utils/initialiseJigsaw";
 import AwarenessOverlay from "components/AwarenessOverlay";
+import Header from "components/Header";
+import Footer from "components/Footer";
 import Viewport from "components/Viewport";
 import { WORLD_WIDTH, WORLD_HEIGHT } from "./constants";
 
@@ -51,51 +52,55 @@ function App() {
               <Piece key={index} piece={piece} />
             ))}
           </JigsawProvider>
-          <Graphics
-            draw={(g) => {
-              g.lineStyle(10, 0xff0000);
-              g.drawRect(0, 0, stageWidth, stageHeight);
-            }}
-          />
-          <Sprite
-            x={-10}
-            y={-10}
-            width={20}
-            height={20}
-            texture={PIXI.Texture.WHITE}
-            tint={0x00ff00}
-          />
         </Viewport>
       </Stage>
 
-      <div
-        css={css`
-          position: absolute;
-          right: 20px;
-          bottom: 20px;
-          display: flex;
-          gap: 12px;
-          button {
-            user-select: none;
-          }
-        `}
-      >
-        <button
-          onClick={() => {
-            initialiseJigsaw(8, 14, 100);
-          }}
+      <Header>
+        <div
+          css={css`
+            display: flex;
+            gap: 12px;
+          `}
         >
-          Initialise jigsaw
-        </button>
-        <button
-          onClick={() => {
-            const yPieces = doc.getArray("pieces");
-            yPieces.delete(0, yPieces.length);
-          }}
+          <button
+            css={css`
+              background: var(--color-green);
+              color: var(--color-black0);
+            `}
+            onClick={() => {
+              initialiseJigsaw(4, 3, 200);
+            }}
+          >
+            New
+          </button>
+          <button
+            onClick={() => {
+              const yPieces = doc.getArray("pieces");
+              yPieces.delete(0, yPieces.length);
+            }}
+          >
+            Clear
+          </button>
+        </div>
+      </Header>
+
+      <Footer>
+        <a
+          href="https://github.com/calvincheng"
+          target="_blank"
+          css={css`
+            text-decoration: none;
+            color: var(--color-white);
+            font-size: 14px;
+            opacity: 0.5;
+            &:hover {
+              opacity: 0.9;
+            }
+          `}
         >
-          Nuke
-        </button>
-      </div>
+          <b> calvincheng</b>
+        </a>
+      </Footer>
 
       <AwarenessOverlay viewport={viewportRef.current} />
     </>
