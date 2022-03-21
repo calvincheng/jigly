@@ -14,7 +14,7 @@ const COLORS = [
   "#96CDFB", // Blue
   "#89DCEB", // Sky
   "#DDB6F2", // Mauve
-  "#F5C2E7", // Pink
+  // "#F5C2E7", // Pink
   // "#F2CDCD", // Flamingo
 ];
 
@@ -54,8 +54,7 @@ const Cursor = ({
         height: ${size}px;
         width: ${size}px;
         pointer-events: none;
-        transition: none;
-        /* transition: ${interpolate ? "0.15s ease all" : "none"}; */
+        transition: ${interpolate ? "0.1s ease all" : "none"};
       `}
     >
       <CursorIcon fill={cursorColor} />
