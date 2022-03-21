@@ -61,6 +61,20 @@ const useUser = (viewport: any) => {
   }, []);
 
   useEffect(() => {
+    const handlePointerDown = () => {
+      setChatting(false);
+      awareness.setLocalStateField("chat", "");
+      refetchUser();
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, []);
+
+  useEffect(() => {
     const broadcastPos = throttle(([x, y]: number[]) => {
       const { x: worldX, y: worldY } = viewport.toWorld({ x, y });
       awareness.setLocalStateField("pos", [worldX, worldY]);
@@ -81,7 +95,6 @@ const useUser = (viewport: any) => {
     return () => document.removeEventListener("pointermove", handlePointerMove);
   }, [viewport]);
 
-  // Update self awareness
   useEffect(() => {
     const handleKeyDown = (event: any) => {
       switch (event.key) {
