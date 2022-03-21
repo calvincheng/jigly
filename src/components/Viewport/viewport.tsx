@@ -22,24 +22,11 @@ const PixiViewport = PixiComponent("Viewport", {
       .decelerate()
       .pinch()
       .wheel({ trackpadPinch: true, wheelZoom: false })
-      .clamp({
-        left: 0,
-        right: worldWidth,
-        top: 0,
-        bottom: worldHeight,
-      })
       .clampZoom({ minScale: props.minScale, maxScale: props.maxScale });
 
     viewport.moving = false;
 
     const handleMoved = () => {
-      // NOTE: Prevents clamp-jitter for some reason
-      viewport.clamp({
-        left: 0,
-        right: worldWidth,
-        top: 0,
-        bottom: worldHeight,
-      });
       if (!viewport.moving) {
         viewport.moving = true;
       }
