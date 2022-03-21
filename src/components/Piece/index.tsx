@@ -53,7 +53,9 @@ const Piece = ({ piece }: PieceProps) => {
     deltaRef.current = null;
     viewport.drag({ pressDrag: true });
     snapPieceToNeighbour(piece, pieces, { tolerance: 20 / viewport.scaled });
-    console.log(`Complete: ${checkComplete(pieces)}`);
+    const { correct, incorrectPiece } = checkComplete(pieces);
+    console.log(`Complete: ${correct}`);
+    console.log(`incorrectPiece:`, incorrectPiece);
   }, [piece, pieces]);
 
   const handlePointerMove = useCallback(
