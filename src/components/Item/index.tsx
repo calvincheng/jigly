@@ -1,7 +1,7 @@
 import { useCallback, useRef, memo } from "react";
 import * as Y from "yjs";
-import useItem from "../../hooks/useItem";
-import { doc } from "../../Y";
+import useItem from "hooks/useItem";
+import { doc } from "Y";
 import { Sprite } from "@inlet/react-pixi";
 import * as PIXI from "pixi.js";
 

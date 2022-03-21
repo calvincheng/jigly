@@ -2,15 +2,15 @@
 import { useRef, useCallback } from "react";
 import { css } from "@emotion/react";
 import * as PIXI from "pixi.js";
-import { doc } from "./Y";
-import useWindowSize from "./hooks/useWindowSize";
+import { doc } from "Y";
+import useWindowSize from "hooks/useWindowSize";
 import { Stage, Sprite, Graphics } from "@inlet/react-pixi";
-import { JigsawProvider } from "./contexts/jigsaw";
-import usePieces from "./hooks/usePieces";
-import Piece from "./components/Piece";
-import initialiseJigsaw from "./utils/initialiseJigsaw";
-import AwarenessOverlay from "./components/AwarenessOverlay";
-import Viewport from "./components/Viewport";
+import { JigsawProvider } from "contexts/jigsaw";
+import usePieces from "hooks/usePieces";
+import Piece from "components/Piece";
+import initialiseJigsaw from "utils/initialiseJigsaw";
+import AwarenessOverlay from "components/AwarenessOverlay";
+import Viewport from "components/Viewport";
 import { WORLD_WIDTH, WORLD_HEIGHT } from "./constants";
 
 function App() {

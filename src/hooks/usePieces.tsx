@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { doc, provider } from "../Y";
-import { YPiece } from "../types";
+import { doc, provider } from "Y";
+import { YPiece } from "types";
 import * as Y from "yjs";
 
 const usePieces = () => {

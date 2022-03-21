@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { awareness } from "../Y";
-import { Users } from "../types";
+import { awareness } from "Y";
+import { Users } from "types";
 
 const useUsers = () => {
   const [users, setUsers] = useState<Users>({});

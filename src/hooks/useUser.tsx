@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { awareness } from "../Y";
-import { User } from "../types";
+import { awareness } from "Y";
+import { User } from "types";
 import throttle from "lodash.throttle";
 
 const useUser = (viewport: any) => {

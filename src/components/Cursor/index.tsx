@@ -2,7 +2,7 @@
 import { memo } from "react";
 import { css } from "@emotion/react";
 import CursorIcon from "./CursorIcon";
-import ChatBubble from "../ChatBubble";
+import ChatBubble from "components/ChatBubble";
 
 // Catppuccin colourscheme
 const COLORS = [

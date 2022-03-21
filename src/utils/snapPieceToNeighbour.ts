@@ -1,4 +1,4 @@
-import { YPiece, SnapCandidate } from "../types";
+import { YPiece, SnapCandidate } from "types";
 
 export default function snapPieceToNeighbour(
   piece: YPiece,

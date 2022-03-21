@@ -1,13 +1,13 @@
-import { useEffect, useCallback, useRef, useState, useMemo, memo } from "react";
+import { useEffect, useCallback, useRef, useState, memo } from "react";
 import * as PIXI from "pixi.js";
 import * as Y from "yjs";
 import { Graphics } from "@inlet/react-pixi";
-import usePiece from "../../hooks/usePiece";
-import useJigsaw from "../../contexts/jigsaw";
-import { useViewport } from "../Viewport";
-import snapPieceToNeighbour from "../../utils/snapPieceToNeighbour";
-import checkComplete from "../../utils/checkComplete";
-import drawPiece from "../../utils/drawPiece";
+import usePiece from "hooks/usePiece";
+import useJigsaw from "contexts/jigsaw";
+import { useViewport } from "components/Viewport";
+import snapPieceToNeighbour from "utils/snapPieceToNeighbour";
+import checkComplete from "utils/checkComplete";
+import drawPiece from "utils/drawPiece";
 
 type PieceProps = {
   piece: Y.Map<number>;

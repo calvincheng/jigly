@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from "react";
-import useUser from "../../hooks/useUser";
-import useUsers from "../../hooks/useUsers";
-import Cursor from "../Cursor";
+import useUser from "hooks/useUser";
+import useUsers from "hooks/useUsers";
+import Cursor from "components/Cursor";
 
 type AwarenessProps = {
   viewport: any;

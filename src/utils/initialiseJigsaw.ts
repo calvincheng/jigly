@@ -1,8 +1,8 @@
 import * as Y from "yjs";
-import { doc } from "../Y";
-import generateJigsaw from "./generateJigsaw";
-import { YPiece } from "../types";
-import { WORLD_WIDTH, WORLD_HEIGHT } from "../constants";
+import { doc } from "Y";
+import generateJigsaw from "utils/generateJigsaw";
+import { YPiece } from "types";
+import { WORLD_WIDTH, WORLD_HEIGHT } from "constants";
 
 function initialiseJigsaw(n: number, m: number, size: number) {
   // Generate edges

@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import * as PIXI from "pixi.js";
-import imagePath from "../assets/greatWave.png";
+import imagePath from "assets/greatWave.png";
 // import imagePath from "../assets/greatWaveSmall.png";
 // import imagePath from "../assets/monalisa.webp";
 import { useApp as usePixi } from "@inlet/react-pixi";
-import { YPiece } from "../types";
+import { YPiece } from "types";
 
 const JigsawContext = createContext<any>(null);
 

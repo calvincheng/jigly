@@ -1,4 +1,4 @@
-import { YPiece } from "../types";
+import { YPiece } from "types";
 
 /**
  * Checks if puzzle is complete

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { doc, provider } from "../Y";
+import { doc, provider } from "Y";
 
 const useItems = () => {
   const [items, setItems] = useState<any[]>([]);

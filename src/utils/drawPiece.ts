@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import { Bezier, YPiece } from "../types";
+import { Bezier, YPiece } from "types";
 
 const template: Bezier[] = [
   // Taken (with thanks) from markE at
