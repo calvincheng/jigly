@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { awareness } from "Y";
 import { User } from "types";
+import { COLORS } from "constants";
+import sample from "utils/sample";
 import throttle from "lodash.throttle";
 
 const useUser = (viewport: any) => {
@@ -34,6 +36,8 @@ const useUser = (viewport: any) => {
       pos: [0, 0],
       chat: "",
       active: true,
+      color: sample(COLORS),
+      name: "Xiao Ming",
     };
     awareness.setLocalState(initial);
     setUser(initial);
@@ -87,11 +91,13 @@ const useUser = (viewport: any) => {
       setPos([x, y]);
 
       // Broadcast world position
-      if (!viewport.moving) {
+      if (viewport && !viewport.moving) {
         broadcastPos([x, y]);
       }
     };
+
     document.addEventListener("pointermove", handlePointerMove);
+
     return () => document.removeEventListener("pointermove", handlePointerMove);
   }, [viewport]);
 

@@ -3,24 +3,11 @@ import { memo } from "react";
 import { css } from "@emotion/react";
 import CursorIcon from "./CursorIcon";
 import ChatBubble from "components/ChatBubble";
-
-// Catppuccin colourscheme
-const COLORS = [
-  "#F28FAD", // Red
-  "#F8BD96", // Peach
-  "#FAE3B0", // Yellow
-  "#ABE9B3", // Green
-  "#B5E8E0", // Teal
-  "#96CDFB", // Blue
-  "#89DCEB", // Sky
-  "#DDB6F2", // Mauve
-  // "#F5C2E7", // Pink
-  // "#F2CDCD", // Flamingo
-];
+import { CURSOR_SIZE } from "constants";
 
 type CursorProps = {
-  id: string;
   pos: [number, number];
+  name?: string;
   color?: string;
   chat?: string;
   chatting?: boolean;
@@ -29,21 +16,43 @@ type CursorProps = {
   interpolate?: boolean;
 };
 
+type CursorNameProps = {
+  name: string;
+  color: string;
+};
+
+const CursorName = ({ name, color }: CursorNameProps) => {
+  return (
+    <div
+      css={css`
+        display: inline-block;
+        padding: 4px 6px;
+        font-size: 10px;
+        white-space: pre;
+        transform: translate(12px, -14px);
+        border: 2px solid #000000d5;
+        border-radius: 2px;
+        font-weight: bold;
+        background: ${color};
+      `}
+    >
+      {name}
+    </div>
+  );
+};
+
 const Cursor = ({
-  id,
   pos,
-  color,
+  name,
+  color = "var(--color-white)",
   chat = "",
   chatting = false,
   onChat = () => null,
   active = true,
   interpolate = false,
 }: CursorProps) => {
-  const size = 16;
-  const cursorColor = color ?? COLORS[id.charCodeAt(0) % COLORS.length];
   const [x, y] = pos;
-
-  if (!active) return null;
+  const cursorColor = active ? color : "var(--color-black4)";
 
   return (
     <div
@@ -51,8 +60,8 @@ const Cursor = ({
         top: ${y}px;
         left: ${x}px;
         position: absolute;
-        height: ${size}px;
-        width: ${size}px;
+        height: ${CURSOR_SIZE}px;
+        width: ${CURSOR_SIZE}px;
         pointer-events: none;
         transition: ${interpolate ? "0.1s ease all" : "none"};
       `}
@@ -62,6 +71,7 @@ const Cursor = ({
       {chatting && (
         <ChatBubble text={chat} onChange={onChat} background={cursorColor} />
       )}
+      {!chatting && name && <CursorName name={name} color={cursorColor} />}
     </div>
   );
 };

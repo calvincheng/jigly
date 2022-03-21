@@ -1,7 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 
-const Footer = ({ children }: any) => {
+const GithubLink = () => {
+  return (
+    <a
+      href="https://github.com/calvincheng"
+      target="_blank"
+      css={css`
+        text-decoration: none;
+        color: var(--color-grey1);
+        font-size: 14px;
+        font-weight: 500;
+      `}
+    >
+      calvincheng
+    </a>
+  );
+};
+
+const Footer = () => {
   return (
     <footer
       css={css`
@@ -16,7 +33,7 @@ const Footer = ({ children }: any) => {
         color: #ffffff88;
       `}
     >
-      {children}
+      <GithubLink />
     </footer>
   );
 };

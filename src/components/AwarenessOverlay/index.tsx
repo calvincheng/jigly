@@ -1,15 +1,16 @@
 import { useReducer, useEffect } from "react";
 import useUser from "hooks/useUser";
-import useUsers from "hooks/useUsers";
+import useAwareness from "contexts/awareness";
 import Cursor from "components/Cursor";
+import { CURSOR_SIZE } from "constants";
 
 type AwarenessProps = {
   viewport: any;
 };
 
-const Awareness = ({ viewport }: AwarenessProps) => {
+const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
   const [{ user, pos, chatting }, { updateChat }] = useUser(viewport);
-  const { users } = useUsers();
+  const { users } = useAwareness();
   const [, rerender] = useReducer((x: boolean) => !x, true);
 
   useEffect(() => {
@@ -27,39 +28,36 @@ const Awareness = ({ viewport }: AwarenessProps) => {
       {viewport &&
         Object.entries(users)
           .filter(([peerID]) => peerID !== user?.id)
-          .map(([peerID, peer]) => {
+          .map(([peerID, peer]: any) => {
             const [x, y] = peer.pos;
             const { x: peerX, y: peerY } = viewport.toScreen({ x, y });
-            if (
-              0 <= peerX &&
+            const withinScreen =
+              -CURSOR_SIZE <= peerX &&
               peerX <= viewport.screenWidth &&
-              0 <= peerY &&
-              peerY <= viewport.screenHeight
-            ) {
-              return (
-                <Cursor
-                  key={peerID}
-                  id={peerID}
-                  pos={[peerX, peerY]}
-                  // pos={peer.pos}
-                  chatting={peer.chat.length > 0}
-                  chat={peer.chat}
-                  active={peer.active}
-                  interpolate
-                />
-              );
-            } else {
-              return null;
-            }
+              -CURSOR_SIZE <= peerY &&
+              peerY <= viewport.screenHeight;
+            if (!withinScreen) return null;
+            return (
+              <Cursor
+                key={peerID}
+                name={peer.name}
+                pos={[peerX, peerY]}
+                color={peer.color}
+                chatting={peer.chat.length > 0}
+                chat={peer.chat}
+                active={peer.active}
+                // interpolate
+              />
+            );
           })}
 
       {/* User cursor */}
       {user && (
         <Cursor
-          id={user.id}
           pos={pos}
           chatting={chatting}
           chat={user.chat}
+          color={user.color}
           onChat={(event: any) => updateChat(event.target.value)}
           active={user.active}
         />
@@ -68,4 +66,4 @@ const Awareness = ({ viewport }: AwarenessProps) => {
   );
 };
 
-export default Awareness;
+export default AwarenessOverlay;
