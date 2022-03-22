@@ -10,6 +10,7 @@
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@inlet/react-pixi": "^6.6.5",
+    "framer-motion": "^6.2.8",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "pixi-viewport": "^4.34.4",

@@ -5,6 +5,7 @@ import Avatar from "components/Avatar";
 import { doc } from "Y";
 import { Users } from "types";
 import initialiseJigsaw from "utils/initialiseJigsaw";
+import { AnimatePresence } from "framer-motion";
 
 const Avatars = () => {
   const { users }: { users: Users } = useAwareness();
@@ -12,25 +13,29 @@ const Avatars = () => {
     <div
       css={css`
         display: flex;
+        justify-content: flex-end;
         gap: 8px;
       `}
     >
-      {Object.values(users).map((user) => {
-        return (
-          <Avatar
-            key={user.id}
-            id={user.id}
-            name={user.name}
-            color={user.color}
-            active={user.active}
-          />
-        );
-      })}
+      <AnimatePresence>
+        {Object.values(users).map((user, idx, arr) => {
+          return (
+            <Avatar
+              key={user.id}
+              id={user.id}
+              name={user.name}
+              color={user.color}
+              active={user.active}
+              idxFromEnd={arr.length - idx - 1}
+            />
+          );
+        })}
+      </AnimatePresence>
     </div>
   );
 };
 
-const Header = ({}: any) => {
+const Header = () => {
   return (
     <header
       css={css`
