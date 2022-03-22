@@ -15,6 +15,7 @@ export default function checkComplete(pieces: YPiece[]): Result {
   if (pieces.length === 0) return { correct: true, incorrectPiece: null };
 
   const size = pieces[0].get("size");
+  const tolerance = 2; // 2 pixel tolerance for rounding errors
 
   // Check if next piece is in the correct position relative to current piece
   for (let idx = 0; idx < pieces.length - 1; idx += 1) {
@@ -25,7 +26,8 @@ export default function checkComplete(pieces: YPiece[]): Result {
     const [nextX, nextY] = nextPiece.get("pos");
     const [nextI, nextJ] = nextPiece.get("index");
     const correct =
-      (nextJ - j) * size === nextX - x && (nextI - i) * size === nextY - y;
+      Math.abs((nextJ - j) * size - (nextX - x)) < tolerance &&
+      Math.abs((nextI - i) * size - (nextY - y)) < tolerance;
     if (!correct) {
       return { correct: false, incorrectPiece: nextPiece };
     }
