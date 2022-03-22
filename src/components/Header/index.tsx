@@ -1,39 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import useAwareness from "contexts/awareness";
-import Avatar from "components/Avatar";
 import { doc } from "Y";
-import { Users } from "types";
 import initialiseJigsaw from "utils/initialiseJigsaw";
-import { AnimatePresence } from "framer-motion";
-
-const Avatars = () => {
-  const { users }: { users: Users } = useAwareness();
-  return (
-    <div
-      css={css`
-        display: flex;
-        justify-content: flex-end;
-        gap: 8px;
-      `}
-    >
-      <AnimatePresence>
-        {Object.values(users).map((user, idx, arr) => {
-          return (
-            <Avatar
-              key={user.id}
-              id={user.id}
-              name={user.name}
-              color={user.color}
-              active={user.active}
-              idxFromEnd={arr.length - idx - 1}
-            />
-          );
-        })}
-      </AnimatePresence>
-    </div>
-  );
-};
+import Avatars from "components/Avatars";
 
 const Header = () => {
   return (
