@@ -1,70 +1,56 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import AutoGrowInput from "components/AutoGrowInput";
 
 type ChatBubbleProps = {
+  name?: string;
   text: string;
   onChange: (event: any) => void;
   background?: string;
-  placeholder?: string;
+  chatting?: boolean;
 };
 
 const ChatBubble = ({
+  name,
   text,
   onChange,
   background = "white",
-  placeholder = "Say something",
+  chatting = false,
 }: ChatBubbleProps) => {
+  const transitionStyle = `0.1s all ease`;
   return (
     <div
       css={css`
-        display: inline-grid;
-        align-items: center;
-        justify-items: start;
-        padding: 8px 12px;
         transform: translate(12px, -14px);
+        padding: ${chatting ? "8px 12px" : "4px 6px"};
+        display: inline-grid;
+        gap: 4px;
         border: 2px solid #000000d5;
-        border-radius: 15px;
+        border-radius: ${chatting ? 15 : 0}px;
         border-top-left-radius: 0px;
         background: ${background};
+        transition: ${transitionStyle};
       `}
     >
-      <input
-        autoFocus
-        spellCheck="false"
-        autoComplete="off"
-        type="text"
-        placeholder={placeholder}
-        value={text}
-        onChange={onChange}
-        maxLength={60}
-        css={css`
-          grid-area: 1 / 1 / 2 / 2;
-          margin: 0;
-          padding: 0;
-          width: 100%;
-
-          color: #161320;
-          resize: none;
-          outline: none;
-          background: none;
-          border: none;
-          appearance: none;
-          &::placeholder {
-            color: #00000066;
-          }
-        `}
-      />
-      <span // Ghost component to allow wrapper to auto-adjust width
-        css={css`
-          visibility: hidden;
-          grid-area: 1 / 1 / 2 / 2;
-          font-weight: bold;
-          font-size: 13px;
-          white-space: pre;
-        `}
-      >
-        {text || placeholder}
-      </span>
+      {name && (
+        <div
+          css={css`
+            white-space: pre;
+            font-size: ${chatting ? 8 : 10}px;
+            font-weight: ${chatting ? 600 : 700};
+            transition: ${transitionStyle};
+          `}
+        >
+          {name}
+        </div>
+      )}
+      {chatting && (
+        <AutoGrowInput
+          value={text}
+          onChange={onChange}
+          placeholder="Say something"
+        />
+      )}
     </div>
   );
 };

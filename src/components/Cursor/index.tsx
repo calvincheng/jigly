@@ -16,31 +16,6 @@ type CursorProps = {
   interpolate?: boolean;
 };
 
-type CursorNameProps = {
-  name: string;
-  color: string;
-};
-
-const CursorName = ({ name, color }: CursorNameProps) => {
-  return (
-    <div
-      css={css`
-        display: inline-block;
-        padding: 4px 6px;
-        font-size: 10px;
-        white-space: pre;
-        transform: translate(12px, -14px);
-        border: 2px solid #000000d5;
-        border-radius: 2px;
-        font-weight: bold;
-        background: ${color};
-      `}
-    >
-      {name}
-    </div>
-  );
-};
-
 const Cursor = ({
   pos,
   name,
@@ -68,10 +43,15 @@ const Cursor = ({
     >
       <CursorIcon fill={cursorColor} />
 
-      {chatting && (
-        <ChatBubble text={chat} onChange={onChat} background={cursorColor} />
+      {(chatting || name) && (
+        <ChatBubble
+          name={name}
+          chatting={chatting}
+          text={chat}
+          onChange={onChat}
+          background={cursorColor}
+        />
       )}
-      {!chatting && name && <CursorName name={name} color={cursorColor} />}
     </div>
   );
 };
