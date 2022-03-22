@@ -23,6 +23,7 @@ const cursorStyle = css`
   height: ${CURSOR_SIZE}px;
   width: ${CURSOR_SIZE}px;
   pointer-events: none;
+  z-index: 1; /* react-tippy tooltips are set to z-index 0 */
 `;
 
 const Cursor = ({

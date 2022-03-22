@@ -71,3 +71,17 @@ a {
 a:hover {
   color: var(--color-white);
 }
+
+
+.tippy-tooltip {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.tippy-tooltip-content {
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  background: var(--color-black3);
+  padding: 8px;
+}
+

@@ -14,6 +14,14 @@ const useUser = (viewport: any) => {
     setUser(awareness.getLocalState() as User);
   }, [awareness]);
 
+  const updateName = useCallback<any>(
+    (name: string) => {
+      awareness.setLocalStateField("name", name);
+      refetchUser();
+    },
+    [awareness]
+  );
+
   const updateChat = useCallback<any>(
     (chat: string) => {
       awareness.setLocalStateField("chat", chat);
@@ -37,7 +45,8 @@ const useUser = (viewport: any) => {
       chat: "",
       active: true,
       color: sample(COLORS),
-      name: "Xiao Ming",
+      name: "",
+      created: Date.now(),
     };
     awareness.setLocalState(initial);
     setUser(initial);
@@ -125,7 +134,7 @@ const useUser = (viewport: any) => {
 
   return [
     { user, pos, chatting },
-    { updateChat, updateActive },
+    { updateChat, updateActive, updateName },
   ];
 };
 

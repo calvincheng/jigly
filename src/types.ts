@@ -7,6 +7,7 @@ export type User = {
   active: boolean;
   color: string;
   name: string;
+  created: number;
 };
 
 export type Users = {

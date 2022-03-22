@@ -3,12 +3,22 @@ import { useMemo } from "react";
 import { css } from "@emotion/react";
 import useAwareness from "contexts/awareness";
 import Avatar from "components/Avatar";
+import CollapsedAvatars from "components/CollapsedAvatars";
 import { Users } from "types";
 import { AnimatePresence } from "framer-motion";
 
+const maxAvatars = 2;
+
 const Avatars = () => {
   const { users }: { users: Users } = useAwareness();
-  const userValues = useMemo(() => Object.values(users), [users]);
+  const userValues = useMemo(
+    () =>
+      Object.values(users).sort(
+        (userA, userB) => userA.created - userB.created
+      ),
+    [users]
+  );
+  const numUsers = userValues.length;
   return (
     <div
       css={css`
@@ -19,7 +29,7 @@ const Avatars = () => {
     >
       <AnimatePresence>
         {userValues
-          .slice(0, Math.min(userValues.length, 3))
+          .slice(0, Math.min(numUsers, maxAvatars))
           .map((user, idx) => (
             <Avatar
               key={user.id}
@@ -27,19 +37,13 @@ const Avatars = () => {
               name={user.name}
               color={user.color}
               active={user.active}
-              idxFromEnd={
-                userValues.length - idx - (userValues.length > 3 ? 2 : 1)
-              }
+              idxFromEnd={numUsers - idx - (numUsers > maxAvatars ? 2 : 1)}
             />
           ))}
-        {userValues.length > 3 && (
-          <Avatar
+        {numUsers > maxAvatars && (
+          <CollapsedAvatars
             key="others"
-            id="others"
-            color="var(--color-white)"
-            name={`+ ${userValues.length - 3}`}
-            active={true}
-            idxFromEnd={0}
+            users={userValues.slice(maxAvatars, numUsers)}
           />
         )}
       </AnimatePresence>
