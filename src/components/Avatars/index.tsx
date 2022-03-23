@@ -10,7 +10,7 @@ import { AnimatePresence } from "framer-motion";
 const maxAvatars = 3;
 
 const Avatars = () => {
-  const { users }: { users: Users } = useAwareness();
+  const { users = {} }: { users: Users } = useAwareness();
   const userValues = useMemo(
     () =>
       Object.values(users).sort(

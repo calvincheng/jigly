@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { awareness } from "Y";
+import { provider, awareness } from "Y";
 import { User } from "types";
 import { COLORS } from "constants";
 import sample from "utils/sample";
@@ -7,12 +7,17 @@ import throttle from "lodash.throttle";
 
 const useUser = (viewport: any) => {
   const [user, setUser] = useState<User>();
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [pos, setPos] = useState<any>([0, 0]);
   const [chatting, setChatting] = useState<boolean>(false);
 
   const refetchUser = useCallback<any>(() => {
     setUser(awareness.getLocalState() as User);
   }, [awareness]);
+
+  const login = () => provider.connect();
+
+  const logout = () => provider.disconnect();
 
   const updateName = useCallback<any>(
     (name: string) => {
@@ -37,6 +42,10 @@ const useUser = (viewport: any) => {
     },
     [awareness]
   );
+
+  useEffect(() => {
+    setLoggedIn(provider.wsconnected);
+  }, [provider.wsconnected]);
 
   useEffect(() => {
     const initial: User = {
@@ -133,8 +142,8 @@ const useUser = (viewport: any) => {
   }, []);
 
   return [
-    { user, pos, chatting },
-    { updateChat, updateActive, updateName },
+    { user, pos, chatting, loggedIn },
+    { updateChat, updateActive, updateName, login, logout },
   ];
 };
 

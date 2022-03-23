@@ -1,6 +1,8 @@
 import { useMemo, useContext, createContext } from "react";
+import { useState } from "react";
 import useUsers from "hooks/useUsers";
 import useUser from "hooks/useUser";
+import LoginModal from "components/Modal/LoginModal";
 
 const AwarenessContext = createContext<any>({});
 const AwarenessMethodsContext = createContext<any>({});
@@ -17,21 +19,28 @@ export const AwarenessProvider = ({
   viewport,
   children,
 }: AwarenessProviderProps) => {
-  const [{ user, pos, chatting }, { updateChat, updateActive, updateName }] =
-    useUser(viewport);
+  const [showLoginModal, setShowLoginModal] = useState(true);
+  const [
+    { user, loggedIn, pos, chatting },
+    { login, logout, updateChat, updateActive, updateName },
+  ] = useUser(viewport);
   const { users } = useUsers();
 
   const value = useMemo(() => {
-    return { user: { user, pos, chatting }, users };
-  }, [user, users, pos, chatting]);
+    return { user: { user, loggedIn, pos, chatting }, users };
+  }, [user, users, loggedIn, pos, chatting]);
 
   const methodsValue = useMemo(() => {
-    return { updateChat, updateActive, updateName };
+    return { login, logout, updateChat, updateActive, updateName };
   }, [updateChat, updateActive, updateName]);
 
   return (
     <AwarenessMethodsContext.Provider value={methodsValue}>
       <AwarenessContext.Provider value={value}>
+        <LoginModal
+          show={showLoginModal}
+          onHide={() => setShowLoginModal(false)}
+        />
         {children}
       </AwarenessContext.Provider>
     </AwarenessMethodsContext.Provider>
