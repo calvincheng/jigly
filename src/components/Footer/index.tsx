@@ -31,6 +31,7 @@ const Footer = () => {
         justify-content: flex-end;
         padding: 20px 24px;
         color: #ffffff88;
+        pointer-events: none;
       `}
     >
       <GithubLink />
