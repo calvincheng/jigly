@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useCallback, useReducer, useEffect } from "react";
 import useUser from "hooks/useUser";
 import useAwareness from "contexts/awareness";
 import Cursor from "components/Cursor";
@@ -12,6 +12,12 @@ const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
   const [{ user, pos, chatting }, { updateChat }] = useUser(viewport);
   const { users } = useAwareness();
   const [, rerender] = useReducer((x: boolean) => !x, true);
+
+  const onChat = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) =>
+      updateChat(event.target.value),
+    [updateChat]
+  );
 
   useEffect(() => {
     // Rerender cursors on viewport move to recalculate their toSreen positions
@@ -58,7 +64,7 @@ const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
           chatting={chatting}
           chat={user.chat}
           color={user.color}
-          onChat={(event: any) => updateChat(event.target.value)}
+          onChat={onChat}
           active={user.active}
         />
       )}

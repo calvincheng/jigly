@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
+import { memo } from "react";
 import { css } from "@emotion/react";
 import AutoGrowInput from "components/AutoGrowInput";
 
 type ChatBubbleProps = {
   name?: string;
   text: string;
-  onChange: (event: any) => void;
+  onChange?: (event: any) => void;
   background?: string;
   chatting?: boolean;
 };
@@ -13,7 +14,7 @@ type ChatBubbleProps = {
 const ChatBubble = ({
   name,
   text,
-  onChange,
+  onChange = () => null,
   background = "white",
   chatting = false,
 }: ChatBubbleProps) => {
@@ -55,4 +56,4 @@ const ChatBubble = ({
   );
 };
 
-export default ChatBubble;
+export default memo(ChatBubble);
