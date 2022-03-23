@@ -2,12 +2,14 @@
 import { css } from "@emotion/react";
 
 type AutoGrowInputProps = {
+  autoFocus: boolean;
   value: string;
   onChange: (event: any) => void;
   placeholder?: string;
 };
 
 const AutoGrowInput = ({
+  autoFocus = false,
   placeholder,
   onChange,
   value,
@@ -21,7 +23,7 @@ const AutoGrowInput = ({
       `}
     >
       <input
-        autoFocus
+        autoFocus={autoFocus}
         spellCheck="false"
         autoComplete="off"
         type="text"

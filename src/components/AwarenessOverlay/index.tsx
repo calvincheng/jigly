@@ -68,6 +68,7 @@ const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
           color={user.color}
           onChat={onChat}
           active={user.active}
+          isUser
         />
       )}
     </>

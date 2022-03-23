@@ -14,6 +14,7 @@ type CursorProps = {
   onChat?: (event: any) => void;
   active?: boolean;
   interpolate?: boolean;
+  isUser?: boolean;
 };
 
 const cursorStyle = css`
@@ -35,6 +36,7 @@ const Cursor = ({
   onChat = () => null,
   active = true,
   interpolate = false,
+  isUser = false,
 }: CursorProps) => {
   const cursorColor = active ? color : "var(--color-black4)";
   return (
@@ -47,6 +49,7 @@ const Cursor = ({
       <CursorIcon fill={cursorColor} />
       {(chatting || name) && (
         <ChatBubble
+          isUser={isUser}
           name={name}
           chatting={chatting}
           text={chat}

@@ -9,6 +9,7 @@ type ChatBubbleProps = {
   onChange?: (event: any) => void;
   background?: string;
   chatting?: boolean;
+  isUser?: boolean;
 };
 
 const ChatBubble = ({
@@ -17,6 +18,7 @@ const ChatBubble = ({
   onChange = () => null,
   background = "white",
   chatting = false,
+  isUser = false,
 }: ChatBubbleProps) => {
   const transitionStyle = `0.1s all ease`;
   return (
@@ -47,6 +49,7 @@ const ChatBubble = ({
       )}
       {chatting && (
         <AutoGrowInput
+          autoFocus={isUser}
           value={text}
           onChange={onChange}
           placeholder="Say something"
