@@ -5,6 +5,7 @@ import { css } from "@emotion/react";
 import { motion, useIsPresent } from "framer-motion";
 import getInitials from "utils/getInitials";
 import { Tooltip } from "react-tippy";
+import { EMOJIS } from "constants";
 
 type AvatarProps = {
   id: string;
@@ -20,7 +21,8 @@ const size = 36;
 
 const Avatar = ({ id, name = "", color, active, idxFromEnd }: AvatarProps) => {
   const isPresent = useIsPresent();
-  const displayName = getInitials(name) || "Ø";
+  const displayName =
+    getInitials(name) || EMOJIS[id.charCodeAt(0) % EMOJIS.length];
 
   const animation = useMemo(
     () => ({
@@ -29,7 +31,10 @@ const Avatar = ({ id, name = "", color, active, idxFromEnd }: AvatarProps) => {
         scale: 1,
         background: active ? color : "var(--color-black4)",
       },
-      exit: { scale: 0, x: -(size + 8) * idxFromEnd },
+      exit: {
+        scale: 0,
+        x: -(size + 8) * idxFromEnd,
+      },
       transition: {
         background: { duration: 0.1 },
       },
@@ -60,7 +65,7 @@ const Avatar = ({ id, name = "", color, active, idxFromEnd }: AvatarProps) => {
           height: ${size}px;
           border-radius: 50%;
           font-weight: bold;
-          font-size: 13px;
+          font-size: ${name ? 13 : 18}px;
           pointer-events: auto;
         `}
       >

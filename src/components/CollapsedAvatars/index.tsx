@@ -5,6 +5,7 @@ import { motion, useIsPresent } from "framer-motion";
 import { Tooltip } from "react-tippy";
 import { User } from "types";
 import getInitials from "utils/getInitials";
+import { EMOJIS } from "constants";
 
 type CollapsedAvatarsProps = {
   users: User[];
@@ -13,7 +14,8 @@ type CollapsedAvatarsProps = {
 const size = 36;
 
 const TooltipUser = ({ user }: any) => {
-  const displayName = getInitials(user.name) || "Ø";
+  const displayName =
+    getInitials(user.name) || EMOJIS[user.id.charCodeAt(0) % EMOJIS.length];
   return (
     <li
       css={css`

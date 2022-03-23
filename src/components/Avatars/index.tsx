@@ -7,7 +7,7 @@ import CollapsedAvatars from "components/CollapsedAvatars";
 import { Users } from "types";
 import { AnimatePresence } from "framer-motion";
 
-const maxAvatars = 2;
+const maxAvatars = 3;
 
 const Avatars = () => {
   const { users }: { users: Users } = useAwareness();
