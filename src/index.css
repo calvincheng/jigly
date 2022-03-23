@@ -43,9 +43,19 @@ body {
 }
 
 input {
-  font-weight: bold;
+  resize: none;
+  outline: none;
+  border: none;
+  appearance: none;
+  color: var(--color-white);
+  background: var(--color-black4);
+  font-weight: 600;
   font-size: 13px;
   font-family: 'Inter', sans-serif !important;
+}
+
+input::placeholder {
+  color: var(--color-grey1);
 }
 
 button {

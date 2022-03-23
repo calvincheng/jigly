@@ -35,12 +35,8 @@ const AutoGrowInput = ({
           padding: 0;
           width: 100%;
 
-          color: #161320;
-          resize: none;
-          outline: none;
+          color: var(--color-black0);
           background: none;
-          border: none;
-          appearance: none;
           &::placeholder {
             color: #00000066;
           }
