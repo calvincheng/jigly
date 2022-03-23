@@ -19,7 +19,7 @@ type CursorProps = {
 const cursorStyle = css`
   top: 0px;
   left: 0px;
-  position: absolute;
+  position: fixed;
   height: ${CURSOR_SIZE}px;
   width: ${CURSOR_SIZE}px;
   pointer-events: none;
