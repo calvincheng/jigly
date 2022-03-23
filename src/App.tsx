@@ -28,7 +28,7 @@ function App() {
 
   return (
     <>
-      <AwarenessProvider>
+      <AwarenessProvider viewport={viewportRef.current}>
         <Stage
           width={stageWidth}
           height={stageHeight}

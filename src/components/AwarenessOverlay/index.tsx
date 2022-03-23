@@ -1,6 +1,5 @@
 import { useCallback, useReducer, useEffect } from "react";
-import useUser from "hooks/useUser";
-import useAwareness from "contexts/awareness";
+import useAwareness, { useAwarenessMethods } from "contexts/awareness";
 import Cursor from "components/Cursor";
 import { CURSOR_SIZE } from "constants";
 
@@ -9,8 +8,11 @@ type AwarenessProps = {
 };
 
 const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
-  const [{ user, pos, chatting }, { updateChat }] = useUser(viewport);
-  const { users } = useAwareness();
+  const {
+    user: { user, pos, chatting },
+    users,
+  } = useAwareness();
+  const { updateChat } = useAwarenessMethods();
   const [, rerender] = useReducer((x: boolean) => !x, true);
 
   const onChat = useCallback(
@@ -20,7 +22,7 @@ const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
   );
 
   useEffect(() => {
-    // Rerender cursors on viewport move to recalculate their toSreen positions
+    // Rerender cursors on viewport move to recalculate their toScreen positions
     if (!viewport) return;
     viewport.on("moved", rerender);
     return () => {
@@ -46,7 +48,7 @@ const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
             return (
               <Cursor
                 key={peerID}
-                name={peer.name}
+                name={peer.name || "Anonymous"}
                 pos={[peerX, peerY]}
                 color={peer.color}
                 chatting={peer.chat.length > 0}
