@@ -35,7 +35,7 @@ const Header = () => {
             color: var(--color-black0);
           `}
           onClick={() => {
-            initialiseJigsaw(4, 3, 200);
+            initialiseJigsaw(16, 11, 78);
           }}
         >
           New
