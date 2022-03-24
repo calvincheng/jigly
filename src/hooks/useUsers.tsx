@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { awareness } from "Y";
 import { Users } from "types";
+import { useStoreActions } from "easy-peasy";
 
 const useUsers = () => {
-  const [users, setUsers] = useState<Users>({});
+  const updateUsers = useStoreActions((actions) => actions.updateUsers);
 
   useEffect(() => {
     // Handle new clients entering and leaving
@@ -12,14 +13,12 @@ const useUsers = () => {
       awareness.getStates().forEach((state, clientID) => {
         newPeers[clientID] = state as any;
       });
-      setUsers(newPeers);
+      updateUsers(newPeers);
     };
 
     awareness.on("change", handleAwarenessChange);
     return () => awareness.off("change", handleAwarenessChange);
   }, []);
-
-  return { users };
 };
 
 export default useUsers;

@@ -10,6 +10,7 @@ const endpoint = import.meta.env?.DEV
 const provider = new WebsocketProvider(endpoint, `jigly-demo`, doc, {
   connect: true,
 });
+
 const awareness = provider.awareness;
 
 export { doc, provider, awareness };

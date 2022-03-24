@@ -19,16 +19,16 @@ export const AwarenessProvider = ({
   viewport,
   children,
 }: AwarenessProviderProps) => {
+  useUsers();
   const [showLoginModal, setShowLoginModal] = useState(true);
   const [
     { user, loggedIn, pos, chatting },
     { login, logout, updateChat, updateActive, updateName },
   ] = useUser(viewport);
-  const { users } = useUsers();
 
   const value = useMemo(() => {
-    return { user: { user, loggedIn, pos, chatting }, users };
-  }, [user, users, loggedIn, pos, chatting]);
+    return { user: { user, loggedIn, pos, chatting } };
+  }, [user, loggedIn, pos, chatting]);
 
   const methodsValue = useMemo(() => {
     return { login, logout, updateChat, updateActive, updateName };

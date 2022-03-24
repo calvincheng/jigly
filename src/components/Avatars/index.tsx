@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { useMemo } from "react";
 import { css } from "@emotion/react";
-import useAwareness from "contexts/awareness";
 import Avatar from "components/Avatar";
 import CollapsedAvatars from "components/CollapsedAvatars";
 import { Users } from "types";
 import { AnimatePresence } from "framer-motion";
+import { useStoreState } from "easy-peasy";
 
 const maxAvatars = 3;
 
 const Avatars = () => {
-  const { users = {} }: { users: Users } = useAwareness();
+  const users: Users = useStoreState((state) => state.users);
   const userValues = useMemo(
     () =>
       Object.values(users).sort(

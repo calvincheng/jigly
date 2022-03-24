@@ -2,16 +2,18 @@ import { useCallback, useReducer, useEffect } from "react";
 import useAwareness, { useAwarenessMethods } from "contexts/awareness";
 import Cursor from "components/Cursor";
 import { CURSOR_SIZE } from "constants";
+import { useStoreState } from "easy-peasy";
 
 type AwarenessProps = {
   viewport: any;
 };
 
 const AwarenessOverlay = ({ viewport }: AwarenessProps) => {
+  const users = useStoreState((state) => state.users);
   const {
     user: { user, pos, chatting },
-    users,
   } = useAwareness();
+
   const { updateChat } = useAwarenessMethods();
   const [, rerender] = useReducer((x: boolean) => !x, true);
 
