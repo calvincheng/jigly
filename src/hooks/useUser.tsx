@@ -126,8 +126,8 @@ const useUser = (viewport: any) => {
           if (!chatting) {
             event.preventDefault();
             setChatting(true);
-            break;
           }
+          break;
         case "Escape":
           updateChat("");
           setChatting(false);
@@ -139,7 +139,7 @@ const useUser = (viewport: any) => {
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [chatting]);
 
   return [
     { user, pos, chatting, loggedIn },
