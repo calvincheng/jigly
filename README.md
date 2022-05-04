@@ -1,22 +1,20 @@
-<div id="top"></div>
-
-
-
-<br />
 <div align="center">
-  <h3 align="center">jigly</h3>
-  <p align="center">
-    A multiplayer jigsaw game, developed to experiment with CRDT and WebGL
-    technologies. 
-  </p>
-  <p align="center">
-  <a href="https://calvincheng.github.io/jigly">View Demo</a>
-  </p>
-  <img src="docs/screenshot.png" alt="Product" width="640" />
-  <p align="center">
-  </p>
+  <img src="docs/screenshot.png" alt="Product" width="90%" />
+  <br />
+  <br />
+  <br />
 </div>
 
+<div id="top"></div>
+
+# jigly 🧩
+  
+A multiplayer jigsaw game, developed to experiment with CRDT and WebGL
+technologies. 
+
+[**Live demo available here**](https://calvincheng.github.io/jigly)
+
+<br />
 
 
 ## Features
