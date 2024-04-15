@@ -56,13 +56,3 @@ Distributed under the [MIT License](https://github.com/calvincheng/jigly/blob/ma
 
 
 
-## Contact
-
-Calvin Cheng - calvin.cc.cheng@gmail.com
-
-Project Link: [https://github.com/calvincheng/jigly](https://github.com/calvincheng/jigly)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
